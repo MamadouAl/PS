@@ -1,0 +1,49 @@
+package AlgLin;
+
+public class SysDiagonal extends SysLin {
+	
+
+	public SysDiagonal(Matrice m, Vecteur v) throws IrregularSysLinException {
+		super(m, v);
+	}
+	
+	/**
+	 * Renvoie la résolution du système diagonal
+	 */
+	@Override
+	public Vecteur resolution() throws IrregularSysLinException {
+		Matrice matrice = getMatriceSystem();
+		Vecteur res = new Vecteur(matrice.nbLigne());
+
+		for(int i = 0; i < matrice.nbLigne(); i++) { // dx = b => x = b/d avec d!=0
+			if (Math.abs(matrice.getCoef(i, i)) < Matrice.EPSILON) 
+                throw new IrregularSysLinException("Le système diagonal est irrégulier.");
+            
+			res.remplacecoef(i, secondMembre.getCoeff(i) / matrice.getCoef(i, i));
+		}
+		return res;
+	}
+	
+
+	public static void main(String[] args) throws IrregularSysLinException {
+		double tab[] = {1,2,4};
+		Vecteur vecteur = new Vecteur(tab);
+		
+		double mat[][]= {{1,0, 0},{0,1, 0},{0,0,1}};
+		Matrice matrice = new Matrice(mat);								
+		SysLin sys = new SysDiagonal(matrice, vecteur);					
+
+		Vecteur resolution = sys.resolution();
+		System.out.println("resolution "+ resolution);
+		
+		//Test de la norme
+		double tab3[] = {1,2,3};
+		Vecteur vecteur3 = new Vecteur(tab3);
+		System.out.println("Norme L1 : " + vecteur3.normeL1(vecteur3));
+		System.out.println("Norme L2 : " + vecteur3.normeL2(vecteur3));
+		System.out.println("Norme Linf : " + vecteur3.normeLinf(vecteur3));
+		
+		
+	}
+
+}

@@ -59,10 +59,6 @@ public class Vecteur extends Matrice {
 	
 	/**
 	 * Permet de faire le produit de deux vecteurs
-	 * @param a
-	 * @param b
-	 * @return
-	 * @throws Exception
 	 */
 	public static Vecteur produit(Vecteur a, Vecteur b) throws Exception {
 		if(a.getTaille() != b.getTaille()) 
@@ -72,6 +68,16 @@ public class Vecteur extends Matrice {
 			produit.remplacecoef(i, a.getCoeff(i) * b.getCoeff(i));
 		}
 		return produit;
+	}
+	
+	public static Vecteur difference(Vecteur a, Vecteur b) throws Exception {
+		if (a.getTaille() != b.getTaille())
+			throw new Exception("Les deux vecteurs n'ont pas la meme taille");
+		Vecteur difference = new Vecteur(a.getTaille());
+		for (int i = 0; i < a.getTaille(); i++) {
+			difference.remplacecoef(i, a.getCoeff(i) - b.getCoeff(i));
+		}
+		return difference;
 	}
 	
 	/**
@@ -87,7 +93,7 @@ public class Vecteur extends Matrice {
 	/**
 	 * Methode qui retourne la norme L1 d'un vecteur
 	 */
-	public double normeL1(Vecteur vect) {
+	public static double normeL1(Vecteur vect) {
 		double norme = 0.0;
 		for (int i = 0; i < vect.getTaille(); i++) {
 			norme += Math.abs(vect.getCoeff(i));
@@ -98,7 +104,7 @@ public class Vecteur extends Matrice {
 	/**
 	 * Methode qui retourne la norme L2 d'un vecteur
 	 */
-	public double normeL2(Vecteur vect) {
+	public static double normeL2(Vecteur vect) {
 		double norme = 0.0;
 		for (int i = 0; i < vect.getTaille(); i++) {
 			norme += Math.pow(vect.getCoeff(i), 2);
@@ -109,7 +115,7 @@ public class Vecteur extends Matrice {
 	/**
      * Methode qui retourne la norme Linfini d'un vecteur
      */
-	public double normeLinf(Vecteur vect) {
+	public static double normeInfini(Vecteur vect) {
 		double norme = 0.0;
 		for (int i = 0; i < vect.getTaille(); i++) {
 			norme = Math.max(norme, Math.abs(vect.getCoeff(i)));
@@ -118,19 +124,18 @@ public class Vecteur extends Matrice {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		double tab[] = {1.5, 2.9, 3.1};
-		Vecteur a = new Vecteur(tab);
-		//a.remplacecoef(1, 8);
-		System.out.println("construction à partir d'un tableau :\n" + a); 
-		//System.out.println("Coeff :"+ a.getCoef(0));
+		double tab[] = {1,2,3};
+		double tab2[] = {4,5,6};
 		
-		//Deuxieme exemple 
-		Vecteur b = new Vecteur(3);
-		b.remplacecoef(0, 5);
-		System.out.println(b);
+		Vecteur vect1 = new Vecteur(tab);
+		Vecteur vect2 = new Vecteur(tab2);
+		System.out.println("vect1 : " +vect1);
+		System.out.println("Coeff : " + vect1.getCoeff(1));
 		
-		//Vecteur c = new Vecteur("/home/etudiant/dm213333/L3 INFO/S6/Resources/vecteur.txt");
-		//System.out.println("Construction à partir du fichier : \n" +c);
+		vect1.remplacecoef(1, 5.5);
+		System.out.println("vect1 modifié : " +vect1);
+		System.out.println("vect2 : " +vect2);
+		System.out.println("vect1 x vect2 " +produit(vect1, vect2));
 	}
 	
 }
