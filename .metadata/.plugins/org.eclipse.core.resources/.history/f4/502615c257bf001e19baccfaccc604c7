@@ -1,0 +1,10 @@
+package AlgLin;
+
+public class SystTriangInf extends SysLin {
+
+	public SystTriangInf(Matrice m, Vecteur v) throws IrregularSysLinException {
+		super(m, v);
+		// TODO Auto-generated constructor stub
+	}
+
+}

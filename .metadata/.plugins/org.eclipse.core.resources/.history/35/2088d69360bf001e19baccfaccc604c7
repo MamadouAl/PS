@@ -1,0 +1,44 @@
+package AlgLin;
+
+public class SystTriangInf extends SysLin {
+
+	public SystTriangInf(Matrice m, Vecteur v) throws IrregularSysLinException {
+		super(m, v);
+	}
+	
+	/**
+	 * Renvoie la résolution du système triangulaire inférieur
+	 */
+	@Override
+	public Vecteur resolution() throws IrregularSysLinException {
+        Matrice matrice = getMatriceSystem();
+        Vecteur res = new Vecteur(matrice.nbLigne());
+
+        for (int i = 0; i < matrice.nbLigne(); i++) {
+            double sum = 0.0;
+            for (int j = 0; j < i; j++) {
+                sum += matrice.getCoef(i, j) * res.getCoeff(j);
+            }
+            if (Math.abs(matrice.getCoef(i, i)) < Matrice.EPSILON) 
+                throw new IrregularSysLinException("Le système diagonal est irrégulier.");
+            
+            res.remplacecoef(i, (secondMembre.getCoeff(i) - sum) / matrice.getCoef(i, i));
+        }
+
+        return res;
+    }
+	
+	public static void main(String... args) {
+		double mat[][] = { {1, 0, 0 }, { 2, 2, 0 }, { 3, 4, -4 } };
+		Matrice matrice = new Matrice(mat);
+		Vecteur vecteur = new Vecteur(new double[] {1, 2, 3});
+		
+		try {
+			SystTriangInf sys = new SystTriangInf(matrice, vecteur);
+			System.out.println("solution "+sys.resolution());
+		} catch (IrregularSysLinException e) {
+			e.printStackTrace();
+		}
+	}
+
+}

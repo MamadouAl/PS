@@ -1,0 +1,31 @@
+package AlgLin;
+
+public class Vecteur extends Matrice {
+	/**
+	 * Constructeur qui cree un parametre entier
+	 * @param nbligne
+	 */
+	public Vecteur(int nbligne) {
+		super(nbligne, 1);
+	}
+
+	public Vecteur(double[] tableau) {
+		super(tableau.length, 1);
+		for(int i=0; i< tableau.length; i++) {
+			this.coefficient[i][0] = tableau[i];
+		}
+		
+	}
+
+	public Vecteur(String fichier) throws Exception {
+		super(fichier);
+		if(this.nbColonne() != 1) throw new Exception("Le fichier ne contient pas un vecteur");
+	}
+	
+	public int getTaille() {
+		return this.nbLigne();
+	}
+	
+	public 
+	
+}

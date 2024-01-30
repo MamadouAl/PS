@@ -1,0 +1,55 @@
+package AlgLin;
+
+public class Vecteur extends Matrice {
+	/**
+	 * Constructeur qui cree un parametre entier
+	 * @param nbligne
+	 */
+	public Vecteur(int nbligne) {
+		super(nbligne, 1);
+	}
+
+	public Vecteur(double[] tableau) {
+		super(tableau.length, 1);
+		for(int i=0; i< tableau.length; i++) {
+			this.coefficient[i][0] = tableau[i];
+		}
+		
+	}
+
+	public Vecteur(String fichier) throws Exception {
+		super(fichier);
+		if(this.nbColonne() != 1) throw new Exception("Le fichier ne contient pas un vecteur");
+	}
+	
+	public int getTaille() {
+		return this.nbLigne();
+	}
+	
+	public double getCoeff(int pos) {
+		return this.getCoef(pos, 0);
+	}
+	
+	public void remplacecoef(int pos, double valeur) {
+		this.remplacecoef(pos, 0, valeur);
+	}
+	
+	public static Vecteur produit(Vecteur a, Vecteur b) throws Exception {
+		if(a.getTaille() != b.getTaille()) 
+			throw new Exception("Les deux vecteurs n'ont pas la meme taille");
+		Vecteur produit = new Vecteur(a.getTaille());
+		for(int i =0; i < a.getTaille(); i++) {
+			produit.remplacecoef(i, a.getCoeff(i) * b.getCoeff(i));
+		}
+		return produit;
+	}
+	
+	public String toString() {
+		String res ="";
+		for(int i=0; i< getTaille(); i++) {
+			res += getCoeff(i) +" ";
+		}
+		return res;
+	}
+	
+}

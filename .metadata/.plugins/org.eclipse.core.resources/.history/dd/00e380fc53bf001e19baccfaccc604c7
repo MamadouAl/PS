@@ -1,0 +1,30 @@
+package AlgLin;
+
+public abstract class SysLin {
+	
+	private int ordre;
+	protected Matrice matriceSystem;
+	protected Vecteur secondMembre;
+	
+	public SysLin(Matrice m, Vecteur v) throws IrregularSysLinException {
+		if (m.nbColonne() != m.nbLigne() || m.nbLigne() != v.getTaille())
+			throw new IrregularSysLinException("Probleme de taille !");
+		this.matriceSystem = m;
+		this.secondMembre = v;
+		this.ordre = m.nbLigne();
+	}
+	
+	public int getOrdre() {
+		return this.ordre;
+	}
+	
+	public Matrice getMatriceSystem() {
+		return this.matriceSystem;
+	}
+	
+	public Vecteur getSecondMembre() {
+		return this.secondMembre;
+	}
+	
+	public abstract Vecteur resolution() throws IrregularSysLinException;
+}

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename local variable &apos;composants&apos; in &apos;AlgLin.SysDiagonal.main(...)&apos; to &apos;tab&apos;&#x0D;&#x0A;- Original project: &apos;TP1&apos;&#x0D;&#x0A;- Original element: &apos;AlgLin.SysDiagonal.main(String[]).composants&apos;&#x0D;&#x0A;- Renamed element: &apos;composants&apos;&#x0D;&#x0A;- Update references to refactored element" description="Rename local variable &apos;composants&apos;" id="org.eclipse.jdt.ui.rename.local.variable" input="/src&lt;AlgLin{SysDiagonal.java[SysDiagonal~main~\[QString;@composants!734!769!741!750!\[D!0!false" name="tab" references="true" stamp="1706609452672" version="1.0"/>
+</session>

@@ -1,0 +1,17 @@
+package AlgLin;
+
+public class SystTriangInf extends SysLin {
+
+	public SystTriangInf(Matrice m, Vecteur v) throws IrregularSysLinException {
+		super(m, v);
+	}
+	
+	/**
+	 * Renvoie la résolution du système triangulaire inférieur
+	 */
+	@Override
+	public Vecteur resolution() throws IrregularSysLinException {
+		
+	}
+
+}

@@ -1,0 +1,22 @@
+package AlgLin;
+
+public class SysDiagonal extends SysLin {
+	
+
+	public SysDiagonal(Matrice m, Vecteur v) throws IrregularSysLinException {
+		super(m, v);
+	}
+
+	@Override
+	public Vecteur resolution() throws IrregularSysLinException {
+		Matrice matrice = getMatriceSystem();
+		Vecteur res = new Vecteur(matrice.nbLigne());
+
+		for(int i = 0; i < matrice.nbLigne(); i++) { // dx = b => x = b/d
+			
+			res.remplacecoef(i, secondMembre.getCoeff(i) / matrice.getCoef(i, i));
+		}
+		return res;
+	}
+
+}
