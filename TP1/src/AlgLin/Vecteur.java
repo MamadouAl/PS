@@ -58,14 +58,26 @@ public class Vecteur extends Matrice {
 	}
 	
 	/**
-	 * Permet de faire le produit de deux vecteurs
+	 * Permet de faire le produit scalaire de deux vecteurs
+	 * Sans gestion d'erreur
 	 */
-	public static Vecteur produit(Vecteur a, Vecteur b) throws Exception {
-		if(a.getTaille() != b.getTaille()) 
-			throw new Exception("Les deux vecteurs n'ont pas la meme taille");
-		Vecteur produit = new Vecteur(a.getTaille());
+	public static double produit(Vecteur a, Vecteur b) throws Exception {
+		double produit = 0.0;
 		for(int i =0; i < a.getTaille(); i++) {
-			produit.remplacecoef(i, a.getCoeff(i) * b.getCoeff(i));
+			produit += a.getCoeff(i) * b.getCoeff(i);
+		}
+		return produit;
+	}
+	
+	/**
+	 * Permet de faire le produit de deux vecteurs Avec gestion d'erreur
+	 */
+	public static double verif_produit(Vecteur a, Vecteur b) throws Exception {
+		if (a.getTaille() != b.getTaille())
+			throw new Exception("Les deux vecteurs n'ont pas la meme taille");
+		double produit = 0.0;
+		for (int i = 0; i < a.getTaille(); i++) {
+			produit += a.getCoeff(i) + b.getCoeff(i);
 		}
 		return produit;
 	}
@@ -135,7 +147,7 @@ public class Vecteur extends Matrice {
 		vect1.remplacecoef(1, 5.5);
 		System.out.println("vect1 modifié : " +vect1);
 		System.out.println("vect2 : " +vect2);
-		System.out.println("vect1 x vect2 " +produit(vect1, vect2));
+		System.out.println("vect1 . vect2 " +verif_produit(vect1, vect2));
 	}
 	
 }

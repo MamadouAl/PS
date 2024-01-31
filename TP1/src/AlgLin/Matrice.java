@@ -129,7 +129,7 @@ public class Matrice {
 		return mat;					
 	}
 	
-	static Matrice verif_produit(Matrice a, Matrice b) throws Exception{
+	static Matrice verif_produit(Matrice a, Matrice b) throws IrregularSysLinException {
 		int ligne = 0;
 		int colonne = 0;
 		if(a.nbColonne()==b.nbLigne())
@@ -138,7 +138,7 @@ public class Matrice {
 			colonne = b.nbColonne();
 		}
 		else{
-			throw new Exception("Dimensions des matrices à multiplier incorrectes");
+			throw new IrregularSysLinException ("Dimensions des matrices à multiplier incorrectes");
 		}
 		
 		Matrice mat = new Matrice(ligne, colonne);
