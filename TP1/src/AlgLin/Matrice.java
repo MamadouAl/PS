@@ -33,8 +33,8 @@ public class Matrice {
 			System.out.println("Fichier absent");
 		}
 	}
-	/** Definir ici les autres methodes */
 	
+	/** Definir ici les autres methodes */
 	public void recopie(Matrice arecopier){
 		int ligne, colonne;
 		ligne = arecopier.nbLigne(); colonne = arecopier.nbColonne();
@@ -52,7 +52,7 @@ public class Matrice {
 		return this.coefficient[0].length;
 	}
 	
-	public double getCoef(int ligne, int colonne){
+	public double getCoeff(int ligne, int colonne){
 		return this.coefficient[ligne][colonne];
 	}
 	
@@ -68,10 +68,10 @@ public class Matrice {
 			for(int j =0; j< colonne;j++){
 				if(j == 0)
 				{
-					matr += this.getCoef(i, j);
+					matr += this.getCoeff(i, j);
 				}
 				else{
-					matr += " " + this.getCoef(i, j);
+					matr += " " + this.getCoeff(i, j);
 				}
 			}
 			matr += "\n";
@@ -164,11 +164,11 @@ public class Matrice {
 		System.out.println("Recopie de la matrice b :\n"+c);
 		System.out.println("Nombre de lignes et colonnes de la matrice c : "+c.nbLigne()+
 				", "+c.nbColonne());
-		System.out.println("Coefficient (2,2) de la matrice b : "+b.getCoef(1, 1));
+		System.out.println("Coefficient (2,2) de la matrice b : "+b.getCoeff(1, 1));
 		System.out.println("Nouvelle valeur de ce coefficient : 8");
 		b.remplacecoef(1, 1, 8);
 		System.out.println("Vérification de la modification du coefficient");
-		System.out.println("Coefficient (2,2) de la matrice b : "+b.getCoef(1, 1));
+		System.out.println("Coefficient (2,2) de la matrice b : "+b.getCoeff(1, 1));
 		System.out.println("Addition de 2 matrices : affichage des 2 matrices "+
 				"puis de leur addition");
 		System.out.println("matrice 1 :\n"+a+"matrice 2 :\n"+b+"somme :\n"+

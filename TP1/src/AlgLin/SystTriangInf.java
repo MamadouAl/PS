@@ -17,12 +17,12 @@ public class SystTriangInf extends SysLin {
 		for (int i = 0; i < matrice.nbLigne(); i++) {
 			double sum = 0.0;
 			for (int j = 0; j < i; j++) {
-				sum += matrice.getCoef(i, j) * res.getCoeff(j);
+				sum += matrice.getCoeff(i, j) * res.getCoeff(j);
 			}
-			if (Math.abs(matrice.getCoef(i, i)) < Matrice.EPSILON)
+			if (Math.abs(matrice.getCoeff(i, i)) < Matrice.EPSILON)
 				throw new IrregularSysLinException("Le système diagonal est irrégulier.");
 
-			res.remplacecoef(i, (secondMembre.getCoeff(i) - sum) / matrice.getCoef(i, i));
+			res.remplacecoef(i, (secondMembre.getCoeff(i) - sum) / matrice.getCoeff(i, i));
 		}
 
 		return res;
@@ -40,31 +40,35 @@ public class SystTriangInf extends SysLin {
 		for (int i = 0; i < resolu.nbLigne(); i++) {
 			resolu.remplacecoef(i, 0, resolution.getCoeff(i));
 		}
+		
 		Matrice v = new Matrice(vecteur.getTaille(), 1);
 		for (int i = 0; i < vecteur.getTaille(); i++) {
 			v.remplacecoef(i, 0, vecteur.getCoeff(i));
-			v.remplacecoef(i, 0, -v.getCoef(i, 0));
-		}
+			v.remplacecoef(i, 0, -v.getCoeff(i, 0));
+		} // -b
 
-		Matrice resultat = Matrice.produit(matrice, resolu);
-		Matrice resulatFinal = Matrice.addition(resultat, v);
+		Matrice resultat = Matrice.produit(matrice, resolu); //Ax
+		Matrice resulatFinal = Matrice.addition(resultat, v); //Ax - b
 		Vecteur norme = new Vecteur(resulatFinal.nbLigne());
 		for (int i = 0; i < resulatFinal.nbLigne(); i++) {
-			norme.remplacecoef(i, resulatFinal.getCoef(i, 0));
+			norme.remplacecoef(i, resulatFinal.getCoeff(i, 0));
 		}
 
 		// Test de la norme
 		double resNorme1 = Vecteur.normeL1(norme);
-		if (resNorme1 <= 0.0 || resNorme1 > Matrice.EPSILON) {
-			System.out.println("La norme du vecteur est null ou très petite");
+		System.out.println("Norme L1 : " + resNorme1);
+		if (resNorme1 - 0.0 < Matrice.EPSILON) {
+			System.out.println("La norme du vecteur est nulle ou très petite");
 		}
 		double resNorme2 = Vecteur.normeL2(norme);
-		if (resNorme2 <= 0.0 || resNorme2 > Matrice.EPSILON) {
-			System.out.println("La norme du vecteur est null ou très petite");
+		System.out.println("Norme L2 : " + resNorme2);
+		if (resNorme2 - 0.0 < Matrice.EPSILON) {
+			System.out.println("La norme du vecteur est nulle ou petite");
 		}
 		double resNormeInf = Vecteur.normeInfini(norme);
-		if (resNormeInf <= 0.0 || resNormeInf > Matrice.EPSILON) {
-			System.out.println("La norme du vecteur est null ou petite");
+		System.out.println("Norme Linfini : " + resNormeInf);
+		if (resNormeInf - 0.0 <  Matrice.EPSILON) {
+			System.out.println("La norme du vecteur est nulle ou petite");
 		}
 	}
 

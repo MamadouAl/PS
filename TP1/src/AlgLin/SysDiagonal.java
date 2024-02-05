@@ -15,10 +15,10 @@ public class SysDiagonal extends SysLin {
 		Vecteur res = new Vecteur(matrice.nbLigne());
 
 		for (int i = 0; i < matrice.nbLigne(); i++) { // dx = b => x = b/d avec d!=0
-			if (Math.abs(matrice.getCoef(i, i)) < Matrice.EPSILON)
+			if (Math.abs(matrice.getCoeff(i, i)) < Matrice.EPSILON)
 				throw new IrregularSysLinException("Le système diagonal est irrégulier.");
 
-			res.remplacecoef(i, secondMembre.getCoeff(i) / matrice.getCoef(i, i));
+			res.remplacecoef(i, secondMembre.getCoeff(i) / matrice.getCoeff(i, i));
 		}
 		return res;
 	}
@@ -39,14 +39,14 @@ public class SysDiagonal extends SysLin {
 		Matrice v = new Matrice(vecteur.getTaille(), 1);
 		for (int i = 0; i < vecteur.getTaille(); i++) {
 			v.remplacecoef(i, 0, vecteur.getCoeff(i));
-			v.remplacecoef(i, 0, -v.getCoef(i, 0));
+			v.remplacecoef(i, 0, -v.getCoeff(i, 0));
 		}
 
 		Matrice resultat = Matrice.produit(matrice, resolu);
 		Matrice resulatFinal = Matrice.addition(resultat, v);
 		Vecteur norme = new Vecteur(resulatFinal.nbLigne());
 		for (int i = 0; i < resulatFinal.nbLigne(); i++) {
-			norme.remplacecoef(i, resulatFinal.getCoef(i, 0));
+			norme.remplacecoef(i, resulatFinal.getCoeff(i, 0));
 		}
 
 		// Test de la norme

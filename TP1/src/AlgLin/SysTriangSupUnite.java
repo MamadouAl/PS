@@ -1,11 +1,11 @@
 package AlgLin;
 
-public class SysTriangSupSupUnite extends SysTriangSup {
+public class SysTriangSupUnite extends SysTriangSup {
 
-	public SysTriangSupSupUnite(Matrice m, Vecteur v) throws IrregularSysLinException {
+	public SysTriangSupUnite(Matrice m, Vecteur v) throws IrregularSysLinException {
 		super(m, v);
 		for (int i = v.getTaille() - 1; i >= 0; i--) {
-			if (Math.abs(m.getCoef(i, i) - 1.0) > Matrice.EPSILON) {
+			if (Math.abs(m.getCoeff(i, i) - 1.0) > Matrice.EPSILON) {
 				throw new IrregularSysLinException("La diagonale n'est pas égale à 1.");
 			}
 		}
@@ -17,7 +17,7 @@ public class SysTriangSupSupUnite extends SysTriangSup {
 		Vecteur vecteur = new Vecteur(new double[] { 1, 2, 3 });
 
 		try {
-			SysTriangSupSupUnite sys = new SysTriangSupSupUnite(matrice, vecteur);
+			SysTriangSupUnite sys = new SysTriangSupUnite(matrice, vecteur);
 			System.out.println("solution " + sys.resolution());
 		} catch (IrregularSysLinException e) {
 			e.printStackTrace();

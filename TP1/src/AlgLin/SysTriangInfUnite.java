@@ -7,7 +7,7 @@ public class SysTriangInfUnite extends SystTriangInf {
 		
 		// Vérifier que les coefficients diagonaux sont égaux à 1
         for (int i = 0; i < m.nbLigne(); i++) {
-            if (Math.abs(m.getCoef(i, i) - 1.0) > Matrice.EPSILON) {
+            if (Math.abs(m.getCoeff(i, i) - 1.0) > Matrice.EPSILON) {
 				throw new IrregularSysLinException("La diagonale n'est pas égale à 1.");
             }
         }

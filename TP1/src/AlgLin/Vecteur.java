@@ -1,8 +1,14 @@
 package AlgLin;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
 public class Vecteur extends Matrice {
 	/**
 	 * Constructeur qui cree un vecteur de taille nbligne
+	 * 
 	 * @param nbligne
 	 */
 	public Vecteur(int nbligne) {
@@ -11,70 +17,99 @@ public class Vecteur extends Matrice {
 
 	/**
 	 * Constructeur qui cree un vecteur a partir d'un tableau
+	 * 
 	 * @param tableau : tableau de double
 	 */
 	public Vecteur(double[] tableau) {
 		super(tableau.length, 1);
-		for(int i=0; i< tableau.length; i++) {
+		for (int i = 0; i < tableau.length; i++) {
 			this.coefficient[i][0] = tableau[i];
 		}
-		
+
 	}
-	
+
 	/**
 	 * Constructeur qui cree un vecteur a partir d'un fichier
+	 * 
 	 * @param fichier : fichier de double
 	 * @throws Exception
 	 */
-	public Vecteur(String fichier) throws Exception {
-		super(fichier);
-		if(this.nbColonne() != 1) throw new Exception("Le fichier ne contient pas un vecteur");
-	}
-	
+	public Vecteur(String fichier)  {
+        super(1, 1);
+        try {
+            Scanner sc = new Scanner(new File(fichier));
+            int taille = sc.nextInt();
+            this.coefficient = new double[taille][1];
+            for (int i = 0; i < taille; i++) {
+                this.coefficient[i][0] = sc.nextDouble();
+            }
+            sc.close();
+		} catch (FileNotFoundException | InputMismatchException e) {
+			e.printStackTrace();
+		}
+    }
+
 	/**
 	 * Retourne la taille du vecteur
+	 * 
 	 * @return
 	 */
 	public int getTaille() {
 		return this.nbLigne();
 	}
-	
+
 	/**
 	 * Retourne le coefficient a la position pos
+	 * 
 	 * @param pos
 	 * @return
 	 */
 	public double getCoeff(int pos) {
-		return this.getCoef(pos, 0);
+		return this.getCoeff(pos, 0);
 	}
-	
+
 	/**
 	 * Remplace le coefficient a la position pos par la valeur
+	 * 
 	 * @param pos
 	 * @param valeur
 	 */
 	public void remplacecoef(int pos, double valeur) {
 		this.remplacecoef(pos, 0, valeur);
 	}
-	
+
 	/**
-	 * Permet de faire le produit scalaire de deux vecteurs
-	 * Sans gestion d'erreur
+	 * Permet de faire le produit d'une matrice par un vecteur
+	 */
+	public static Vecteur produit(Matrice m, Vecteur v) {
+		Vecteur produit = new Vecteur(m.nbLigne());
+		for (int i = 0; i < m.nbLigne(); i++) {
+			double somme = 0;
+			for (int j = 0; j < m.nbColonne(); j++) {
+				somme += m.getCoeff(i, j) * v.getCoeff(j);
+			}
+			produit.remplacecoef(i, somme);
+		}
+		return produit;
+	}
+
+	/**
+	 * Permet de faire le produit scalaire de deux vecteurs Sans gestion d'erreur
 	 */
 	public static double produit(Vecteur a, Vecteur b) throws Exception {
 		double produit = 0.0;
-		for(int i =0; i < a.getTaille(); i++) {
+		for (int i = 0; i < a.getTaille(); i++) {
 			produit += a.getCoeff(i) * b.getCoeff(i);
 		}
 		return produit;
 	}
-	
+
 	/**
 	 * Permet de faire le produit de deux vecteurs Avec gestion d'erreur
 	 */
 	public static double verif_produit(Vecteur a, Vecteur b) throws Exception {
 		if (a.getTaille() != b.getTaille())
-			throw new Exception("Les deux vecteurs n'ont pas la meme taille");
+			throw new Exception("Les tailles des vecteurs ne sont pas égales");
 		double produit = 0.0;
 		for (int i = 0; i < a.getTaille(); i++) {
 			produit += a.getCoeff(i) + b.getCoeff(i);
@@ -82,26 +117,47 @@ public class Vecteur extends Matrice {
 		return produit;
 	}
 	
-	public static Vecteur difference(Vecteur a, Vecteur b) throws Exception {
-		if (a.getTaille() != b.getTaille())
-			throw new Exception("Les deux vecteurs n'ont pas la meme taille");
-		Vecteur difference = new Vecteur(a.getTaille());
+	/**
+	 * Permet de faire l'addition de deux vecteurs
+	 */
+	public static Vecteur addition(Vecteur a, Vecteur b) {
+		Vecteur somme = new Vecteur(a.getTaille());
 		for (int i = 0; i < a.getTaille(); i++) {
-			difference.remplacecoef(i, a.getCoeff(i) - b.getCoeff(i));
+			somme.remplacecoef(i, a.getCoeff(i) + b.getCoeff(i));
 		}
-		return difference;
+		return somme;
 	}
 	
 	/**
-	 * Methode d'affichage
+	 * Permet de faire l'addition de deux vecteurs Avec gestion d'erreur
+	 */
+	public static Vecteur verif_addition(Vecteur a, Vecteur b) throws Exception {
+		if (a.getTaille() != b.getTaille()) {
+			throw new Exception("Les tailles des vecteurs ne sont pas égales");
+		}
+		Vecteur somme = new Vecteur(a.getTaille());
+		for (int i = 0; i < a.getTaille(); i++) {
+			somme.remplacecoef(i, a.getCoeff(i) + b.getCoeff(i));
+		}
+		return somme;
+	}
+
+
+	/**
+	 * Permet d’afficher les coefficients du vecteur
 	 */
 	public String toString() {
-		String res ="";
-		for(int i=0; i< getTaille(); i++) {
-			res += getCoeff(i) +" ";
+		String vect = "(";
+		for (int i = 0; i < this.getTaille(); i++) {
+			vect += this.coefficient[i][0];
+			if (i != this.getTaille() - 1) {
+				vect += ", ";
+			}
 		}
-		return res;
+		vect += ")";
+		return vect;
 	}
+
 	/**
 	 * Methode qui retourne la norme L1 d'un vecteur
 	 */
@@ -112,7 +168,7 @@ public class Vecteur extends Matrice {
 		}
 		return norme;
 	}
-	
+
 	/**
 	 * Methode qui retourne la norme L2 d'un vecteur
 	 */
@@ -123,10 +179,10 @@ public class Vecteur extends Matrice {
 		}
 		return Math.sqrt(norme);
 	}
-	
+
 	/**
-     * Methode qui retourne la norme Linfini d'un vecteur
-     */
+	 * Methode qui retourne la norme Linfini d'un vecteur
+	 */
 	public static double normeInfini(Vecteur vect) {
 		double norme = 0.0;
 		for (int i = 0; i < vect.getTaille(); i++) {
@@ -134,20 +190,24 @@ public class Vecteur extends Matrice {
 		}
 		return norme;
 	}
-	
+
 	public static void main(String[] args) throws Exception {
-		double tab[] = {1,2,3};
-		double tab2[] = {4,5,6};
-		
+		double tab[] = { 1, 2, 3 };
+		double tab2[] = { 4, 5, 6 };
+
 		Vecteur vect1 = new Vecteur(tab);
 		Vecteur vect2 = new Vecteur(tab2);
-		System.out.println("vect1 : " +vect1);
+		System.out.println("vect1 : " + vect1);
 		System.out.println("Coeff : " + vect1.getCoeff(1));
-		
+
 		vect1.remplacecoef(1, 5.5);
-		System.out.println("vect1 modifié : " +vect1);
-		System.out.println("vect2 : " +vect2);
-		System.out.println("vect1 . vect2 " +verif_produit(vect1, vect2));
+		System.out.println("vect1 modifié : " + vect1);
+		System.out.println("vect2 : " + vect2);
+		System.out.println("vect1 . vect2 " + verif_produit(vect1, vect2));
+		
+		//Test constructeur fichier
+		Vecteur vect3 = new Vecteur("./resources/vecteur.txt");
+		System.out.println("vect3 : " + vect3);
 	}
-	
+
 }

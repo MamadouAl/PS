@@ -35,6 +35,10 @@ public abstract class SysLin {
 		return this.secondMembre;
 	}
 	
+	public void setSecondMembre(Vecteur v) {
+		this.secondMembre = v;
+	}
+	
 	/**
 	 * Rrenvoie la résolution du système
 	 */
