@@ -8,7 +8,10 @@ public class Helder extends SysLin {
 	public Helder(Matrice matrice, Vecteur secondMembre) throws IrregularSysLinException {
 		super(matrice, secondMembre);
 	}
-
+	
+	/**
+	 * Permet de factoriser la matrice A en L, D et R
+	 */
 	public void factorLDR() {
 		int degre = getOrdre();
 		Matrice Li_ = new Matrice(degre, degre);
@@ -146,16 +149,14 @@ public class Helder extends SysLin {
 
 		// Cas 2 : A²x = b
 		System.out.println("\nCas 2 : A²x = b");
-		Matrice Acarre = Matrice.produit(matrice, matrice);
-		Helder helder2 = new Helder(Acarre, secondMembre);
-		Vecteur solution2 = helder2.resolution();
-		System.out.println("la matrice L :\n" + helder2.getL().getMatriceSystem().toString());
-		System.out.println("la matrice D :\n " + helder2.getD().getMatriceSystem().toString());
-		System.out.println("la matrice R :\n " + helder2.getR().getMatriceSystem().toString());
-		System.out.println("Solution x de A²x : " + solution2.toString());
+		Vecteur y = solution;//y tel que Ay =b
+		Helder helder2 = new Helder(matrice, y); //Ax =y
+		Vecteur solutionX = helder2.resolution();
+		System.out.println("Solution x de A²x = b : " + solutionX.toString());
+	
 		
 		//Cas 3 : Ax - b
-		System.out.println("\nCas 3 : Ax - b * Normes");
+		System.out.println("\nCas 3 : Ax - b");
 		Vecteur Ax = Vecteur.produit(matrice, solution);
 		System.out.println("Ax : " + Ax.toString());
 		helder.setSecondMembre(new Vecteur("./resources/secondMembre2.txt"));
@@ -169,13 +170,11 @@ public class Helder extends SysLin {
 		if (normeL1 - 0.0 < Matrice.EPSILON) {
 			System.out.println("\nLa norme L1 du vecteur est nulle ou très petite");
 		}
-		
 		double normeL2 = Vecteur.normeL2(Ax_b);
 		if (normeL2 - 0.0 < Matrice.EPSILON) {
 			System.out.println("La norme L2 du vecteur est nulle ou très petite");
 		}
-		
-		double normeInf = Vecteur.normeInfini(Ax_b);
+		double normeInf = Vecteur.normeLinfini(Ax_b);
 		if (normeInf - 0.0 < Matrice.EPSILON) {
 			System.out.println("La norme infinie du vecteur est nulle ou très petite");
 		}

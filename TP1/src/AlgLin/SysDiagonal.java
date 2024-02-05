@@ -24,43 +24,47 @@ public class SysDiagonal extends SysLin {
 	}
 
 	public static void main(String[] args) throws IrregularSysLinException {
+		System.out.println("Test de la classe SysDiagonal");
 		double tab[] = { 4, 5, 6 };
-		Vecteur vecteur = new Vecteur(tab);
-		double mat[][] = { { 1, 0, 0 }, { 0, 1, 0 }, { 0, 0, 1 } };
-		Matrice matrice = new Matrice(mat);
-		SysLin sys = new SysDiagonal(matrice, vecteur);
+		double mat[][] = { { 3, 0, 0 }, { 0, 2, 0 }, { 0, 0, 1 } };
+		Vecteur vecteurB = new Vecteur(tab);
+		Matrice matriceA = new Matrice(mat);
+		SysLin sys = new SysDiagonal(matriceA, vecteurB);
+		Vecteur solutionX = sys.resolution();
+		System.out.println("La solution est : " + solutionX);
 
-		Vecteur resolution = sys.resolution();
-		System.out.println(resolution);
-		Matrice resolu = new Matrice(resolution.getTaille(), 1);
-		for (int i = 0; i < resolu.nbLigne(); i++) {
-			resolu.remplacecoef(i, 0, resolution.getCoeff(i));
-		}
-		Matrice v = new Matrice(vecteur.getTaille(), 1);
-		for (int i = 0; i < vecteur.getTaille(); i++) {
-			v.remplacecoef(i, 0, vecteur.getCoeff(i));
-			v.remplacecoef(i, 0, -v.getCoeff(i, 0));
+		// On prend le vecteur b et on le multiplie par -1
+		Matrice _b = new Matrice(vecteurB.getTaille(), 1);
+		for (int i = 0; i < vecteurB.getTaille(); i++) {
+			_b.remplacecoef(i, 0, vecteurB.getCoeff(i));
+			_b.remplacecoef(i, 0, -_b.getCoeff(i, 0));
 		}
 
-		Matrice resultat = Matrice.produit(matrice, resolu);
-		Matrice resulatFinal = Matrice.addition(resultat, v);
-		Vecteur norme = new Vecteur(resulatFinal.nbLigne());
-		for (int i = 0; i < resulatFinal.nbLigne(); i++) {
-			norme.remplacecoef(i, resulatFinal.getCoeff(i, 0));
+		Matrice resultat = Matrice.produit(matriceA, solutionX);
+		System.out.println("Le résultat Ax : \n" + resultat);
+
+		Matrice Ax_b = Matrice.addition(resultat, _b); // Ax - b
+		System.out.println("Le résultat Ax - b : \n" + Ax_b);
+		Vecteur norme = new Vecteur(Ax_b.nbLigne());
+		for (int i = 0; i < Ax_b.nbLigne(); i++) {
+			norme.remplacecoef(i, Ax_b.getCoeff(i, 0));
 		}
 
 		// Test de la norme
-		double resNorme1 = Vecteur.normeL1(norme);
-		if (resNorme1 <= 0.0 || resNorme1 > Matrice.EPSILON) {
-			System.out.println("La norme du vecteur est null ou très petite");
+		double normeL1 = Vecteur.normeL1(norme);
+		System.out.println("Norme L1 : " + normeL1);
+		if (normeL1 <= 0.0 || normeL1 > Matrice.EPSILON) {
+			System.out.println("=> La norme du vecteur est nulle ou très petite");
 		}
-		double resNorme2 = Vecteur.normeL2(norme);
-		if (resNorme2 <= 0.0 || resNorme2 > Matrice.EPSILON) {
-			System.out.println("La norme du vecteur est null ou très petite");
+		double normeL2 = Vecteur.normeL2(norme);
+		System.out.println("Norme L2 : " + normeL2);
+		if (normeL2 <= 0.0 || normeL2 > Matrice.EPSILON) {
+			System.out.println("=> La norme du vecteur est nulle ou très petite");
 		}
-		double resNormeInf = Vecteur.normeInfini(norme);
-		if (resNormeInf <= 0.0 || resNormeInf > Matrice.EPSILON) {
-			System.out.println("La norme du vecteur est null ou petite");
+		double normeLinfini = Vecteur.normeLinfini(norme);
+		System.out.println("Norme Linfini : " + normeLinfini);
+		if (normeLinfini <= 0.0 || normeLinfini > Matrice.EPSILON) {
+			System.out.println("=> La norme du vecteur est nulle ou très petite");
 		}
 	}
 }

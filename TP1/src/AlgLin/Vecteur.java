@@ -183,7 +183,7 @@ public class Vecteur extends Matrice {
 	/**
 	 * Methode qui retourne la norme Linfini d'un vecteur
 	 */
-	public static double normeInfini(Vecteur vect) {
+	public static double normeLinfini(Vecteur vect) {
 		double norme = 0.0;
 		for (int i = 0; i < vect.getTaille(); i++) {
 			norme = Math.max(norme, Math.abs(vect.getCoeff(i)));
