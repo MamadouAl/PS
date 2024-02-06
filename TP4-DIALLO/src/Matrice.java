@@ -1,11 +1,13 @@
-package AlgLin;
 
-import java.io.*;
-import java.util.*;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 public class Matrice {
 	/** Définir ici les attributs de la classe **/
 	protected double coefficient[][];
+	public final static double EPSILON = 1e-6;
 	
 	/** Définir ici les constructeur de la classe **/
 	Matrice (int nbligne, int nbcolonne){
@@ -32,8 +34,8 @@ public class Matrice {
 			System.out.println("Fichier absent");
 		}
 	}
-	/** Definir ici les autres methodes */
 	
+	/** Definir ici les autres methodes */
 	public void recopie(Matrice arecopier){
 		int ligne, colonne;
 		ligne = arecopier.nbLigne(); colonne = arecopier.nbColonne();
@@ -51,7 +53,7 @@ public class Matrice {
 		return this.coefficient[0].length;
 	}
 	
-	public double getCoef(int ligne, int colonne){
+	public double getCoeff(int ligne, int colonne){
 		return this.coefficient[ligne][colonne];
 	}
 	
@@ -67,10 +69,10 @@ public class Matrice {
 			for(int j =0; j< colonne;j++){
 				if(j == 0)
 				{
-					matr += this.getCoef(i, j);
+					matr += this.getCoeff(i, j);
 				}
 				else{
-					matr += " " + this.getCoef(i, j);
+					matr += " " + this.getCoeff(i, j);
 				}
 			}
 			matr += "\n";
@@ -128,7 +130,7 @@ public class Matrice {
 		return mat;					
 	}
 	
-	static Matrice verif_produit(Matrice a, Matrice b) throws Exception{
+	static Matrice verif_produit(Matrice a, Matrice b) throws IrregularSysLinException {
 		int ligne = 0;
 		int colonne = 0;
 		if(a.nbColonne()==b.nbLigne())
@@ -137,7 +139,7 @@ public class Matrice {
 			colonne = b.nbColonne();
 		}
 		else{
-			throw new Exception("Dimensions des matrices à multiplier incorrectes");
+			throw new IrregularSysLinException ("Dimensions des matrices à multiplier incorrectes");
 		}
 		
 		Matrice mat = new Matrice(ligne, colonne);
@@ -156,18 +158,18 @@ public class Matrice {
 		double mat[][]= {{2,1},{0,1}};
 		Matrice a = new Matrice(mat);
 		System.out.println("construction d'une matrice par affectation d'un tableau :\n"+a);
-		Matrice b = new Matrice("matrice1.txt");
+		Matrice b = new Matrice("./resources/matrice1.txt");
 		System.out.println("Construction d'une matrice par lecture d'un fichier :\n"+b);
 		Matrice c = new Matrice(2,2);
 		c.recopie(b);
 		System.out.println("Recopie de la matrice b :\n"+c);
 		System.out.println("Nombre de lignes et colonnes de la matrice c : "+c.nbLigne()+
 				", "+c.nbColonne());
-		System.out.println("Coefficient (2,2) de la matrice b : "+b.getCoef(1, 1));
+		System.out.println("Coefficient (2,2) de la matrice b : "+b.getCoeff(1, 1));
 		System.out.println("Nouvelle valeur de ce coefficient : 8");
 		b.remplacecoef(1, 1, 8);
 		System.out.println("Vérification de la modification du coefficient");
-		System.out.println("Coefficient (2,2) de la matrice b : "+b.getCoef(1, 1));
+		System.out.println("Coefficient (2,2) de la matrice b : "+b.getCoeff(1, 1));
 		System.out.println("Addition de 2 matrices : affichage des 2 matrices "+
 				"puis de leur addition");
 		System.out.println("matrice 1 :\n"+a+"matrice 2 :\n"+b+"somme :\n"+
