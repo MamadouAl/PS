@@ -7,8 +7,8 @@ public abstract class SysLin {
 	protected Vecteur secondMembre;
 	
 	public SysLin(Matrice m, Vecteur v) throws IrregularSysLinException {
-		if (m.nbColonne() != m.nbLigne() || m.nbLigne() != v.getTaille())
-			throw new IrregularSysLinException("Probleme de taille !");
+		if (m.nbColonne() != v.getTaille())
+			throw new IrregularSysLinException("Probleme de taille entre la matrice Tridiagonale et le vecteur !");
 		this.matriceSystem = m;
 		this.secondMembre = v;
 		this.ordre = m.nbLigne();
