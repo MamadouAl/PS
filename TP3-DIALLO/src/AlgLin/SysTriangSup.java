@@ -1,22 +1,19 @@
 package AlgLin;
 
-public class SystTriangInf extends SysLin {
+public class SysTriangSup extends SysLin {
 
-	public SystTriangInf(Matrice m, Vecteur v) throws IrregularSysLinException {
+	public SysTriangSup(Matrice m, Vecteur v) throws IrregularSysLinException {
 		super(m, v);
 	}
 
-	/**
-	 * Renvoie la résolution du système triangulaire inférieur
-	 */
 	@Override
 	public Vecteur resolution() throws IrregularSysLinException {
 		Matrice matrice = getMatriceSystem();
 		Vecteur res = new Vecteur(matrice.nbLigne());
 
-		for (int i = 0; i < matrice.nbLigne(); i++) {
+		for (int i = matrice.nbLigne() - 1; i >= 0; i--) {
 			double sum = 0.0;
-			for (int j = 0; j < i; j++) {
+			for (int j = i + 1; j < matrice.nbLigne(); j++) {
 				sum += matrice.getCoeff(i, j) * res.getCoeff(j);
 			}
 			if (Math.abs(matrice.getCoeff(i, i)) < Matrice.EPSILON)
@@ -24,15 +21,17 @@ public class SystTriangInf extends SysLin {
 
 			res.remplacecoef(i, (secondMembre.getCoeff(i) - sum) / matrice.getCoeff(i, i));
 		}
+
 		return res;
 	}
 
-	public static void main(String... args) throws IrregularSysLinException {
-		System.out.println("*** Test de la classe SystTriangInf ***");
-		double mat[][] = { { 2, 0, 0 }, { 1, 2, 0 }, { 3, 4, 5 } };
+	public static void main(String[] args) throws IrregularSysLinException {
+		System.out.println("*** Test de la classe SystTriangSup ***");
+		double mat[][] = { { 1, 2, 3 }, { 0, 4, 5 }, { 0, 0, 6 } };
 		Matrice matriceA = new Matrice(mat);
-		Vecteur vecteurB = new Vecteur(new double[] { 1, 2, 3 });
-		SysLin sys = new SystTriangInf(matriceA, vecteurB);
+		Vecteur vecteurB = new Vecteur(new double[] {-2, -1/2, 3 });
+		SysTriangSup sys = new SysTriangSup(matriceA, vecteurB);
+
 		Vecteur solutionX = sys.resolution();
 		System.out.println("x = " + solutionX);
 
@@ -69,6 +68,7 @@ public class SystTriangInf extends SysLin {
 		if (normeLinfini <= 0.0 || normeLinfini > Matrice.EPSILON) {
 			System.out.println("=> La norme du vecteur est nulle ou très petite");
 		}
+
 	}
 
 }

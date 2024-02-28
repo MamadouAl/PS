@@ -10,7 +10,7 @@ public class Thomas extends SysLin {
 	 * Thomas
 	 */
 //	@Override
-	public Vecteur resolution0() {
+	public Vecteur resolution() {
 		int n = secondMembre.nbLigne();
 		Vecteur p = new Vecteur(n);
 		Vecteur q = new Vecteur(n);
@@ -40,8 +40,8 @@ public class Thomas extends SysLin {
 		return solution;
 	}
 	
-	@Override
-	public Vecteur resolution() throws IrregularSysLinException {
+	//@Override
+	public Vecteur resolution_verif() throws IrregularSysLinException {
 	    int n = secondMembre.nbLigne();
 	    if (matriceSystem.nbLigne() != 3 || matriceSystem.nbColonne() != n || n != secondMembre.nbLigne()) {
 	        throw new IrregularSysLinException("Taille incorrecte de la matrice ou du vecteur du second membre.");
@@ -90,10 +90,11 @@ public class Thomas extends SysLin {
 
 	public static void main(String[] args) throws IrregularSysLinException {
 		System.out.println("*** Methode de Thomas ***\n");
-		double[][] tableau = { { 0, 1, 2, 3 }, { 1, 3, 2, 1 }, { 1, 1, 1, 0 } };
-		Mat3Diag mat3DiagA = new Mat3Diag(tableau);
+		double[][] tableau0 = { { 0, 1, 2, 3 }, { 2, 3, 2, 1 }, { 2, 1, 2, 0 } };
+		Mat3Diag mat3DiagA = new Mat3Diag(tableau0);
 		Vecteur vect = new Vecteur(new double[] { 1, 2, 3, 4 });
 		Thomas thomas = new Thomas(mat3DiagA, vect);
+		System.out.println("Matrice A : \n" + mat3DiagA);
 		Vecteur solutionX = thomas.resolution();
 		System.out.println("Solution x : " + solutionX);
 

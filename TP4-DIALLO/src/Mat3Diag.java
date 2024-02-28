@@ -58,9 +58,7 @@ public class Mat3Diag extends Matrice {
 	}
 
 	public static void main(String[] args) throws Exception {
-		double[][] tableau0 = { { 0, 1, 2, 3 }, 
-								{ 1, 3, 2, 1 }, 
-								{ 1, 1, 1, 0 }};
+		double[][] tableau0 = { { 0, 1, 2, 3 }, { 2, 3, 2, 1 }, { 2, 1, 2, 0 } };
 		Mat3Diag matriceA = new Mat3Diag(tableau0);
 		Vecteur v1 = new Vecteur(new double[] { 1, 2, 3, 4 });
 		Vecteur resultat = Mat3Diag.produit(matriceA, v1);
@@ -68,17 +66,15 @@ public class Mat3Diag extends Matrice {
 		System.out.println("Mat3Diag A : \n" + matriceA);
 		System.out.println("Vecteur : " + v1);
 		System.out.println("Résultat du produit : " + resultat);
-		
-		double[][] tableau1 = { { 0, 3, 6, 9 }, 
-								{ 1, 4, 7, 10 }, 
-								{ 2, 5, 8, 0 } };
+
+		double[][] tableau1 = { { 0, 3, 6, 9 }, { 1, 4, 7, 10 }, { 2, 5, 8, 0 } };
 		Mat3Diag matriceB = new Mat3Diag(tableau1);
-		Vecteur v2 = new Vecteur(new double[] {4, 5, 6, 7});
+		Vecteur v2 = new Vecteur(new double[] { 4, 5, 6, 7 });
 		Vecteur resultat2 = Mat3Diag.produit(matriceB, v2);
 		System.out.println("\nMat3Diag B : \n" + matriceB);
 		System.out.println("Vecteur : " + v2);
 		System.out.println("Résultat du produit : " + resultat2);
-		
+
 	}
 
 }

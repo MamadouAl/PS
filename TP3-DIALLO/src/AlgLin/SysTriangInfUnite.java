@@ -5,13 +5,29 @@ public class SysTriangInfUnite extends SystTriangInf {
 	public SysTriangInfUnite(Matrice m, Vecteur v) throws IrregularSysLinException {
 		super(m, v);
 		
-		// Vérifier que les coefficients diagonaux sont égaux à 1
+		/* // Vérifier que les coefficients diagonaux sont égaux à 1
         for (int i = 0; i < m.nbLigne(); i++) {
             if (Math.abs(m.getCoeff(i, i) - 1.0) > Matrice.EPSILON) {
 				throw new IrregularSysLinException("La diagonale n'est pas égale à 1.");
             }
-        }
+        }*/
 	}
+	
+	public Vecteur resolution() throws IrregularSysLinException {
+	    Matrice matrice = getMatriceSystem();
+	    Vecteur secondMembre = getSecondMembre();
+	    Vecteur res = new Vecteur(matrice.nbLigne());
+
+	    for (int i = 0; i < matrice.nbLigne(); i++) {
+	        double sum = 0.0;
+	        for (int j = 0; j < i; j++) {
+	            sum += matrice.getCoeff(i, j) * res.getCoeff(j);
+	        }
+	        res.remplacecoef(i, secondMembre.getCoeff(i) - sum);
+	    }
+	    return res;
+	}
+
         
     public static void main(String... args) throws IrregularSysLinException {
             double mat[][] = { {1, 0, 0 }, { 2, 1, 0 }, { 3, 4, 1 } };
@@ -20,7 +36,6 @@ public class SysTriangInfUnite extends SystTriangInf {
             
 			SysTriangInfUnite sys = new SysTriangInfUnite(matriceA, vecteurB);
 			Vecteur solutionX = sys.resolution();
-			System.out.println("La matrice A : \n" + matriceA);
 			System.out.println("x = " + solutionX);
 
 			// On prend le vecteur b et on le multiplie par -1

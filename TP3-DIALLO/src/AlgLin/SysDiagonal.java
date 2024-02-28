@@ -1,40 +1,37 @@
 package AlgLin;
 
-public class SystTriangInf extends SysLin {
+public class SysDiagonal extends SysLin {
 
-	public SystTriangInf(Matrice m, Vecteur v) throws IrregularSysLinException {
+	public SysDiagonal(Matrice m, Vecteur v) throws IrregularSysLinException {
 		super(m, v);
 	}
 
 	/**
-	 * Renvoie la résolution du système triangulaire inférieur
+	 * Renvoie la résolution du système diagonal
 	 */
 	@Override
 	public Vecteur resolution() throws IrregularSysLinException {
 		Matrice matrice = getMatriceSystem();
 		Vecteur res = new Vecteur(matrice.nbLigne());
 
-		for (int i = 0; i < matrice.nbLigne(); i++) {
-			double sum = 0.0;
-			for (int j = 0; j < i; j++) {
-				sum += matrice.getCoeff(i, j) * res.getCoeff(j);
-			}
-			if (Math.abs(matrice.getCoeff(i, i)) < Matrice.EPSILON)
-				throw new IrregularSysLinException("Le système diagonal est irrégulier.");
+		for (int i = 0; i < matrice.nbLigne(); i++) { // dx = b => x = b/d avec d!=0
+			//if (Math.abs(matrice.getCoeff(i, i)) -0.0 < Matrice.EPSILON)
+				//throw new IrregularSysLinException("Le système diagonal est irrégulier.");
 
-			res.remplacecoef(i, (secondMembre.getCoeff(i) - sum) / matrice.getCoeff(i, i));
+			res.remplacecoef(i, secondMembre.getCoeff(i) / matrice.getCoeff(i, i));
 		}
 		return res;
 	}
 
-	public static void main(String... args) throws IrregularSysLinException {
-		System.out.println("*** Test de la classe SystTriangInf ***");
-		double mat[][] = { { 2, 0, 0 }, { 1, 2, 0 }, { 3, 4, 5 } };
+	public static void main(String[] args) throws IrregularSysLinException {
+		System.out.println("Test de la classe SysDiagonal");
+		double tab[] = { 4, 5, 6 };
+		double mat[][] = { { 3, 0, 0 }, { 0, 2, 0 }, { 0, 0, 1 } };
+		Vecteur vecteurB = new Vecteur(tab);
 		Matrice matriceA = new Matrice(mat);
-		Vecteur vecteurB = new Vecteur(new double[] { 1, 2, 3 });
-		SysLin sys = new SystTriangInf(matriceA, vecteurB);
+		SysLin sys = new SysDiagonal(matriceA, vecteurB);
 		Vecteur solutionX = sys.resolution();
-		System.out.println("x = " + solutionX);
+		System.out.println("La solution est : " + solutionX);
 
 		// On prend le vecteur b et on le multiplie par -1
 		Matrice _b = new Matrice(vecteurB.getTaille(), 1);
@@ -43,11 +40,11 @@ public class SystTriangInf extends SysLin {
 			_b.remplacecoef(i, 0, -_b.getCoeff(i, 0));
 		}
 
-		Matrice Ax = Matrice.produit(matriceA, solutionX); // Ax
-		System.out.println("Le résultat Ax : \n" + Ax);
+		Matrice resultat = Matrice.produit(matriceA, solutionX);
+		System.out.println("Le résultat Ax : \n" + resultat);
 
-		Matrice Ax_b = Matrice.addition(Ax, _b); // Ax - b
-		System.out.println("Le résultat Ax - b : " + Ax_b);
+		Matrice Ax_b = Matrice.addition(resultat, _b); // Ax - b
+		System.out.println("Le résultat Ax - b : \n" + Ax_b);
 		Vecteur norme = new Vecteur(Ax_b.nbLigne());
 		for (int i = 0; i < Ax_b.nbLigne(); i++) {
 			norme.remplacecoef(i, Ax_b.getCoeff(i, 0));
@@ -70,5 +67,4 @@ public class SystTriangInf extends SysLin {
 			System.out.println("=> La norme du vecteur est nulle ou très petite");
 		}
 	}
-
 }

@@ -1,11 +1,11 @@
 package AlgLin;
 
-public class Helder extends SysLin {
+public class Helder0 extends SysLin {
 	private SysTriangInfUnite L;
 	private SysDiagonal D;
 	private SysTriangSupUnite R;
 
-	public Helder(Matrice matrice, Vecteur secondMembre) throws IrregularSysLinException {
+	public Helder0(Matrice matrice, Vecteur secondMembre) throws IrregularSysLinException {
 		super(matrice, secondMembre);
 	}
 	
@@ -139,22 +139,21 @@ public class Helder extends SysLin {
 		Matrice matrice = new Matrice("./resources/matrice1.txt");
 		Vecteur secondMembre = new Vecteur("./resources/secondMembre.txt");
 
-		Helder helder = new Helder(matrice, secondMembre);
+		Helder0 helder = new Helder0(matrice, secondMembre);
 		Vecteur solution = helder.resolution();
 
 		System.out.println("la matrice L :\n" + helder.getL().getMatriceSystem().toString());
 		System.out.println("la matrice D :\n " + helder.getD().getMatriceSystem().toString());
 		System.out.println("la matrice R :\n " + helder.getR().getMatriceSystem().toString());
-		System.out.println("Solution x de Ax = b : " + solution.toString());
+		System.out.println("Solution x1 de Ax = b : " + solution.toString());
 
 		// Cas 2 : A²x = b
 		System.out.println("\nCas 2 : A²x = b");
 		Vecteur y = solution;//y tel que Ay =b
-		Helder helder2 = new Helder(matrice, y); //Ax =y
+		Helder0 helder2 = new Helder0(matrice, y); //Ax =y
 		Vecteur solutionX = helder2.resolution();
 		System.out.println("Solution x de A²x = b : " + solutionX.toString());
 	
-		
 		//Cas 3 : Ax - b
 		System.out.println("\nCas 3 : Ax - b");
 		Vecteur Ax = Vecteur.produit(matrice, solution);
