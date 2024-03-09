@@ -1,0 +1,56 @@
+public class Mat3Diag extends Matrice {
+    public Mat3Diag(int dim1, int dim2) {
+        super(dim1, dim2);
+        if (dim1 != 3) {
+            throw new IllegalArgumentException("Une matrice tridiagonale doit avoir 3 lignes.");
+        }
+    }
+
+    public Mat3Diag(double[][] tableau) {
+        super(tableau);
+        if (tableau.length != 3) {
+            throw new IllegalArgumentException(
+                    "Le tableau doit avoir 3 lignes pour représenter une matrice tridiagonale.");
+        }
+    }
+
+    public Mat3Diag(int dim) {
+        super(3, dim);
+    }
+
+    public static Vecteur produit(Mat3Diag A, Vecteur x) {
+        int n = x.nbLigne();
+        if (A.nbColonne() != n || A.nbLigne() != 3) {
+            throw new IllegalArgumentException(
+                    "La taille de la matrice tridiagonale A et du vecteur x ne sont pas compatibles.");
+        }
+        Vecteur y = new Vecteur(n);
+        double diag, sousDiag, surDiag;
+    
+        diag = A.getCoeff(1, 0);
+        surDiag = A.getCoeff(2, 1);
+        y.remplacecoef(0, diag * x.getCoeff(0) + surDiag * x.getCoeff(1));
+        for (int i = 1; i < n - 1; i++) {
+            sousDiag = A.getCoeff(0, i - 1);
+            diag = A.getCoeff(1, i);
+            surDiag = A.getCoeff(2, i + 1);
+            y.remplacecoef(i, sousDiag * x.getCoeff(i - 1) + diag * x.getCoeff(i) + surDiag * x.getCoeff(i + 1));
+        }
+        sousDiag = A.getCoeff(0, n - 2);
+        diag = A.getCoeff(1, n - 1);
+        y.remplacecoef(n - 1, sousDiag * x.getCoeff(n - 2) + diag * x.getCoeff(n - 1));
+        return y;
+    }
+    
+    public static void main(String[] args) {
+        double[][] tableau = { { 5, 7, 0 }, { 1, 2, 3 }, { 0, 4, 6 } };
+        Mat3Diag A = new Mat3Diag(tableau);
+        Vecteur x = new Vecteur(3);
+        x.remplacecoef(0, 1);
+        x.remplacecoef(1, 2);
+        x.remplacecoef(2, 3);
+        Vecteur y = Mat3Diag.produit(A, x);
+        System.out.println(A);
+        System.out.println(y);
+    }
+}

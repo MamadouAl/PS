@@ -6921,3 +6921,13 @@ java.lang.NullPointerException: Cannot invoke "com.genuitec.copilot4eclipse.lsp.
 
 !ENTRY com.genuitec.copilot4eclipse 4 0 2024-03-09 16:11:54.556
 !MESSAGE Request checkStatus failed with message: getaddrinfo ENOTFOUND api.github.com
+
+!ENTRY com.genuitec.copilot4eclipse 4 0 2024-03-09 18:35:20.321
+!MESSAGE Cannot read field "displayText" because the return value of "com.genuitec.copilot4eclipse.CompletionTracker.currentCompletion()" is null
+!STACK 0
+java.lang.NullPointerException: Cannot read field "displayText" because the return value of "com.genuitec.copilot4eclipse.CompletionTracker.currentCompletion()" is null
+	at com.genuitec.copilot4eclipse.CompletionTracker.activateCompletion(Unknown Source)
+	at com.genuitec.copilot4eclipse.CopilotEditSession.focusOnCompletion(Unknown Source)
+	at com.genuitec.copilot4eclipse.CopilotEditSession.handleCompletionResult(Unknown Source)
+	at com.genuitec.copilot4eclipse.CompletionJob.run(Unknown Source)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)

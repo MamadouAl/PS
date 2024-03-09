@@ -15,9 +15,6 @@ public class SysDiagonal extends SysLin {
 		Vecteur res = new Vecteur(matrice.nbLigne());
 
 		for (int i = 0; i < matrice.nbLigne(); i++) { // dx = b => x = b/d avec d!=0
-			//if (Math.abs(matrice.getCoeff(i, i)) -0.0 < Matrice.EPSILON)
-				//throw new IrregularSysLinException("Le système diagonal est irrégulier.");
-
 			res.remplacecoef(i, secondMembre.getCoeff(i) / matrice.getCoeff(i, i));
 		}
 		return res;

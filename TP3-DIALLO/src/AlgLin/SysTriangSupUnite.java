@@ -4,11 +4,6 @@ public class SysTriangSupUnite extends SysTriangSup {
 
 	public SysTriangSupUnite(Matrice m, Vecteur v) throws IrregularSysLinException {
 		super(m, v);
-		/*for (int i = v.getTaille() - 1; i >= 0; i--) {
-			if (Math.abs(m.getCoeff(i, i) - 1.0) > Matrice.EPSILON) {
-				throw new IrregularSysLinException("La diagonale n'est pas égale à 1.");
-			}
-		} */
 	}
 	
 	public Vecteur resolution() throws IrregularSysLinException {

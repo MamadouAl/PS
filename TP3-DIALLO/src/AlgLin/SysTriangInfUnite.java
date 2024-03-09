@@ -3,14 +3,7 @@ package AlgLin;
 public class SysTriangInfUnite extends SystTriangInf {
 
 	public SysTriangInfUnite(Matrice m, Vecteur v) throws IrregularSysLinException {
-		super(m, v);
-		
-		/* // Vérifier que les coefficients diagonaux sont égaux à 1
-        for (int i = 0; i < m.nbLigne(); i++) {
-            if (Math.abs(m.getCoeff(i, i) - 1.0) > Matrice.EPSILON) {
-				throw new IrregularSysLinException("La diagonale n'est pas égale à 1.");
-            }
-        }*/
+		super(m, v);		
 	}
 	
 	public Vecteur resolution() throws IrregularSysLinException {
