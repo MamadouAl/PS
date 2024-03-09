@@ -1,0 +1,15 @@
+package AlgLin;
+
+public class Helder extends SysLin {
+
+	public Helder(Matrice m, Vecteur v) throws IrregularSysLinException {
+		super(m, v);
+	}
+
+	@Override
+	public Vecteur resolution() throws IrregularSysLinException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

@@ -1,0 +1,23 @@
+package AlgLin;
+
+public class Helder extends SysLin {
+
+	public Helder(Matrice m, Vecteur v) throws IrregularSysLinException {
+		super(m, v);
+	}
+	
+	public void factorLDR() throws IrregularSysLinException {
+		SystTriangInf l = new SystTriangInf(getMatriceSystem(), getSecondMembre());
+		SystDiagonal d = new SystDiagonal(getMatriceSystem(), getSecondMembre());
+		SystTriangSup r = new SystTriangSup(getMatriceSystem(), getSecondMembre());
+		
+		
+	}
+
+	@Override
+	public Vecteur resolution() throws IrregularSysLinException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

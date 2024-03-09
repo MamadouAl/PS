@@ -1,0 +1,28 @@
+package AlgLin;
+
+public class SysTriangSupUnite extends SysLin {
+
+	public SysTriangSupUnite(Matrice m, Vecteur v) throws IrregularSysLinException {
+		super(m, v);
+	}
+
+	@Override
+	public Vecteur resolution() throws IrregularSysLinException {
+		Matrice matrice = getMatriceSystem();
+		Vecteur res = new Vecteur(matrice.nbLigne());
+
+		for (int i = matrice.nbLigne() - 1; i >= 0; i--) {
+			double sum = 0.0;
+			for (int j = i + 1; j < matrice.nbLigne(); j++) {
+				sum += matrice.getCoef(i, j) * res.getCoeff(j);
+			}
+			if (Math.abs(matrice.getCoef(i, i)) - Matrice.EPSILON < 1.0)
+				throw new IrregularSysLinException("La diagonal n'est pas égale à 1.");
+
+			res.remplacecoef(i, (secondMembre.getCoeff(i) - sum));
+		}
+
+		return res;
+	}
+	
+}

@@ -1,0 +1,14 @@
+
+public class Thomas extends SysLin {
+
+	public Thomas(Mat3Diag m, Vecteur v) throws IrregularSysLinException {
+		super(m, v);
+	}
+
+	@Override
+	public Vecteur resolution() throws IrregularSysLinException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

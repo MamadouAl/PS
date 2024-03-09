@@ -1,0 +1,92 @@
+package AlgLin;
+
+public class Helder extends SysLin {
+    private SysTriangInfUnite l;
+    private SysDiagonal d;
+    private SysTriangSupUnite r;
+
+    public Helder(Matrice matrice, Vecteur secondMembre) throws IrregularSysLinException {
+        super(matrice, secondMembre);
+    }
+
+    public void factorLDR() {
+        int n = getOrdre();
+        Matrice l_bis = Matrice.identite(n);
+        Matrice d_bis = new Matrice(n, n);
+        Matrice r_bis = Matrice.identite(n);
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                double sumL = l_bis.sommeProduits(i, j, j);
+                l_bis.remplacecoef(i, j, (getMatriceSystem().get(i, j) - sumL) / d_bis.get(j, j));
+            }
+
+            d_bis.remplacecoef(i, i, getMatriceSystem().get(i, i) - l_bis.sommeProduits(i, i));
+
+            for (int j = i + 1; j < n; j++) {
+                double sumR = l_bis.sommeProduits(i, j, i);
+                r_bis.remplacecoef(i, j, (getMatriceSystem().get(i, j) - sumR) / d_bis.get(i, i));
+            }
+        }
+
+        try {
+            l = new SysTriangInfUnite(l_bis, getSecondMembre());
+            d = new SysDiagonal(d_bis, getSecondMembre());
+            r = new SysTriangSupUnite(r_bis, getSecondMembre());
+        } catch (IrregularSysLinException e) {
+            System.out.println("Erreur lors de la création des systèmes");
+        }
+    }
+
+    @Override
+    public Vecteur resolution() {
+        factorLDR();
+        Vecteur y = l.resolution();
+        Vecteur z = d.resolution(y);
+        Vecteur x = r.resolution(z);
+        return x;
+    }
+
+    public Vecteur resolutionPartielle() {
+        Vecteur y = l.resolution();
+        Vecteur z = d.resolution(y);
+        Vecteur x = r.resolution(z);
+        return x;
+    }
+
+    public Vecteur resolution(Vecteur secondMembre) {
+        factorLDR();
+        l.setSecondMembre(secondMembre);
+        Vecteur y = l.resolution();
+        d.setSecondMembre(y);
+        Vecteur z = d.resolution();
+        r.setSecondMembre(z);
+        Vecteur x = r.resolution();
+        return x;
+    }
+
+    public SysTriangInfUnite getL() {
+        return l;
+    }
+
+    public SysDiagonal getD() {
+        return d;
+    }
+
+    public SysTriangSupUnite getR() {
+        return r;
+    }
+
+    public static void main(String[] args) throws IrregularSysLinException {
+        Matrice matrice = new Matrice("./resources/matrice1.txt");
+        Vecteur secondMembre = new Vecteur(new double[] { 3, 5, 8 });
+
+        Helder helder = new Helder(matrice, secondMembre);
+        Vecteur solution = helder.resolution();
+
+        System.out.println("la matrice L :\n" + helder.getL().getMatriceSystem().toString());
+        System.out.println("la matrice D :\n " + helder.getD().getMatriceSystem().toString());
+        System.out.println("la matrice R :\n " + helder.getR().getMatriceSystem().toString());
+        System.out.println("Solution du système : " + solution.toString());
+    }
+}

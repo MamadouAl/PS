@@ -1,0 +1,322 @@
+package AlgLin;
+
+import java.io.*;
+import java.util.*;
+
+public class Vecteur extends Matrice {
+    /**
+     * Constructeur avec un paramètre entier qui crée un Vecteur qui possède une
+     * seulecolonne et un nombre de lignes égal au paramètre. On ne définit pas ici les
+     * coefficientsdu Vecteur.
+     * 
+     * @param taille la taille du vecteur
+     */
+    public Vecteur(int taille) {
+        super(taille, 1);
+    }
+
+    /**
+     * Constructeur avec un paramètre tableau à une dimension composé de
+     * coefficients de type double. Le tableau "coefficient" possède alors une seule 
+     * colonne qui contient les valeurs du tableau donné en paramètre.
+     * 
+     * @param coefficients les coefficients du vecteur
+     */
+    public Vecteur(double[] coefficients) {
+        super(coefficients.length, 1);
+        for (int i = 0; i < coefficients.length; i++) {
+            this.coefficient[i][0] = coefficients[i];
+        }
+    }
+
+    /**
+     * Constructeur avec un paramètre correspondant à un nom de fichier qui
+     * contiendra la
+     * taille et les coefficients du Vecteur qui seront rangés dans l’attribut «
+     * coefficient » qui ne
+     * contient qu’une seule colonne. Ce constructeur sera capable de détecter grâce
+     * à une
+     * exception que le fichier nommé n’est pas présent.
+     * 
+     * @param fichier le nom du fichier contenant les coefficients du vecteur
+     */
+    public Vecteur(String fichier) {
+        super(1, 1);
+        try {
+            Scanner sc = new Scanner(new File(fichier));
+            int taille = sc.nextInt();
+            this.coefficient = new double[taille][1];
+            for (int i = 0; i < taille; i++) {
+                this.coefficient[i][0] = sc.nextDouble();
+            }
+            sc.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("Erreur : Fichier " + fichier + " absent.");
+        } catch (InputMismatchException e) {
+            System.out.println("Erreur : Le fichier " + fichier + " ne contient pas les données attendues.");
+        }
+    }
+    
+    /**
+     * Méthode qui renvoie la taille du Vecteur.
+     * 
+     * @return la taille du vecteur
+     */
+    public int getTaille() {
+        return this.nbLigne();
+    }
+
+    /**
+     * Méthode qui possède un paramètre entier et qui renvoie le coefficient du
+     * Vecteur
+     * situé à la place correspondant à la valeur du paramètre
+     * 
+     * @param i l'index du coefficient à récupérer
+     * @return  le coefficient du vecteur à l'index i
+     */
+    public double getCoeff(int i) {
+        return this.coefficient[i][0];
+    }
+
+    /**
+     * Méthode qui permet de remplacer un coefficient du vecteur par une valeur
+     * donnée
+     * en paramètre de la méthode.
+     * 
+     * @param i     l'index du coefficient à remplacer
+     * @param value la valeur à utiliser pour remplacer le coefficient
+     */
+    public void remplacecoef(int i, double value) {
+        this.coefficient[i][0] = value;
+    }
+
+    /**
+     * La méthode "toString" qui permet d’afficher le Vecteur, c’est à dire ses
+     * coefficients.
+     * 
+     * @return une chaîne de caractères représentant les coefficients du vecteur
+     */
+    public String toString() {
+        String vect = "[";
+        for (int i = 0; i < this.getTaille(); i++) {
+            vect += this.coefficient[i][0];
+            if (i != this.getTaille() - 1) {
+                vect += ",";
+            }
+        }
+        vect += "]";
+        return vect;
+    }
+
+    /**
+     * Une méthode qui calcule le produit scalaire du Vecteur avec un scalaire.
+     * 
+     * @param scalaire le scalaire à multiplier au vecteur
+     * @return le produit scalaire du vecteur avec le scalaire
+     */
+
+    public Vecteur produit(double scalaire){
+        Vecteur produit = new Vecteur(this.getTaille());
+        for (int i = 0; i < this.getTaille(); i++) {
+            produit.remplacecoef(i,this.getCoeff(i) * scalaire);
+        }
+        return produit;
+    }
+
+    public static Vecteur produit(Matrice m, Vecteur v){
+        Vecteur produit = new Vecteur(m.nbLigne());
+        for (int i = 0; i < m.nbLigne(); i++) {
+            double somme = 0;
+            for (int j = 0; j < m.nbColonne(); j++) {
+                somme += m.getCoeff(i,j) * v.getCoeff(j);
+            }
+            produit.remplacecoef(i,somme);
+        }
+        return produit;
+    }
+
+    /**
+     * Une méthode static qui calcule la somme de deux Vecteurs.
+     * 
+     * @param a le premier vecteur
+     * @param b le deuxième vecteur
+     * @return le produit scalaire des deux vecteurs
+     */
+
+    static Vecteur addition(Vecteur a, Vecteur b){
+        Vecteur somme = new Vecteur(a.getTaille());
+        for (int i = 0; i < a.getTaille(); i++) {
+            somme.remplacecoef(i,a.getCoeff(i) + b.getCoeff(i));
+        }
+        return somme;
+    }
+
+    static Vecteur addition(Matrice a, Matrice b){
+        Vecteur somme = new Vecteur(a.nbLigne());
+        for (int i = 0; i < a.nbLigne(); i++) {
+            somme.remplacecoef(i,a.getCoeff(i,0) + b.getCoeff(i,0));
+        }
+        return somme;
+    }
+
+    /**
+     * Une méthode static qui calcule la somme de deux Vecteurs, mais qui vérifie
+     * 
+     * @param a le premier vecteur
+     * @param b le deuxième vecteur
+     * @return le produit scalaire des deux vecteurs
+     * @throws Exception si les tailles des vecteurs ne sont pas égales
+     */
+
+    public static Vecteur verif_addition(Vecteur a, Vecteur b) throws Exception{
+        if (a.getTaille() != b.getTaille()) {
+            throw new Exception("Les tailles des vecteurs doivent être égales");
+        }
+        Vecteur somme = new Vecteur(a.getTaille());
+        for (int i = 0; i < a.getTaille(); i++) {
+            somme.remplacecoef(i,a.getCoeff(i) + b.getCoeff(i));
+        }
+        return somme;
+    }
+
+    /**
+     * Une méthode statique qui calcule le produit scalaire de 2 vecteurs.
+     * 
+     * @param a le premier vecteur
+     * @param b le deuxième vecteur
+     * @return le produit scalaire des deux vecteurs
+     */
+
+    static Vecteur produit(Vecteur a, Vecteur b){
+        Vecteur produit = new Vecteur(a.getTaille());
+        for (int i = 0; i < a.getTaille(); i++) {
+            produit.remplacecoef(i,a.getCoeff(i) * b.getCoeff(i));
+        }
+        return produit;
+    }
+
+    /**
+     * Une méthode statique qui calcule le produit scalaire de 2 vecteurs.
+     * Elle vérifie que les deux vecteurs ont la même taille.
+     * 
+     * @param a le premier vecteur
+     * @param b le deuxième vecteur
+     * @return le produit scalaire des deux vecteurs
+     */
+
+    static Vecteur verif_produit(Vecteur a, Vecteur b) throws Exception{
+        if (a.getTaille() != b.getTaille()) {
+            throw new Exception("Les tailles des vecteurs doivent être égales");
+        }
+        Vecteur produit = new Vecteur(a.getTaille());
+        for (int i = 0; i < a.getTaille(); i++) {
+            produit.remplacecoef(i,a.getCoeff(i) * b.getCoeff(i));
+        }
+        return produit;
+    }
+
+    /**
+     * Une méthode qui calcule la norme L1 d’un vecteur.
+     * 
+     * @return  double la norme L1 du vecteur
+     */
+
+
+    public static double normeL1(Vecteur v) {
+        double norme = 0.0;
+        for (int i = 0; i < v.getTaille(); i++) {
+            norme += Math.abs(v.getCoeff(i));
+        }
+        return norme;
+    }
+
+    /**
+     * Une méthode qui calcule la norme L2 d’un vecteur.
+     * 
+     * @return  double la norme L2 du vecteur
+     */
+    
+    public static double normeL2(Vecteur v) {
+        double norme = 0.0;
+        for (int i = 0; i < v.getTaille(); i++) {
+            norme += v.getCoeff(i) * v.getCoeff(i);
+        }
+        return Math.sqrt(norme);
+    }
+
+    /**
+     * Une méthode qui calcule la norme LInfini d’un vecteur.
+     * 
+     * @return  double la norme LInfini du vecteur
+     */
+    
+    public static double normeInfini( Vecteur v) {
+        double norme = 0.0;
+        for (int i = 0; i < v.getTaille(); i++) {
+            norme = Math.max(norme, Math.abs(v.getCoeff(i)));
+        }
+        return norme;
+    }
+    
+
+    /**
+     * Une méthode "public static void main(String[] args)" qui va permettre de
+     * tester toutes
+     * les méthodes que vous venez de construire.
+     */
+    public static void main(String[] args) {
+        // Test des constructeurs
+        Vecteur v1 = new Vecteur(5);
+        for(int i = 0; i < v1.getTaille(); i++) {
+            v1.remplacecoef(i, i);
+        }
+        double[] coefficients = { 10, 20, 30, 40, 50 };
+        Vecteur v2 = new Vecteur(coefficients);
+        Vecteur v3 = new Vecteur("vecteur.txt");
+        //System.out.println("Vecteur v3 : " + v3.toString());
+
+
+        // Test de la méthode "taille"
+        System.out.println("Taille de v1 : " + v1.getTaille());
+        System.out.println("Taille de v2 : " + v2.getTaille());
+        System.out.println("Taille de v3 : " + v3.getTaille());
+
+        // Test de la méthode "getCoef"
+        System.out.println("Coefficient à l'index 2 de v2 : " + v2.getCoeff(2));
+
+        // Test de la méthode "remplacecoef"
+        v2.remplacecoef(2, 10);
+
+        // Test de la méthode "toString"
+        System.out.println("Vecteur v1 : " + v1.toString());
+        System.out.println("Vecteur v2 : " + v2.toString());
+        System.out.println("Vecteur v3 : " + v3.toString());
+
+        // Test de la méthode "produitScalaire" de deux vecteurs
+        System.out.println("Produit scalaire de v1 et v2 : " + Vecteur.produit(v1, v2));
+
+        // Test de la méthode "produit" d'un vecteur et d'un scalaire
+        System.out.println("Produit scalaire de v2 et 2 : " + v2.produit(2));
+
+        // Test de la méthode "verif_produit" 
+        try {
+            System.out.println("Produit scalaire de v1 et v3 : " + Vecteur.verif_produit(v1, v3));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        // Test de la méthode "addition" de deux vecteurs
+        Vecteur v4 = Vecteur.addition(v1, v2);
+        System.out.println("Vecteur v4 : " + v4.toString());
+
+        // Test de la méthode "verif_addition" de deux vecteurs
+        try {
+            Vecteur v5 = Vecteur.verif_addition(v1, v3);
+            System.out.println("Vecteur v5 : " + v5.toString());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+
+    }
+}

@@ -1,0 +1,68 @@
+
+public class Thomas extends SysLin {
+
+	public Thomas(Mat3Diag m, Vecteur v) throws IrregularSysLinException {
+		super(m, v);
+	}
+
+	@Override
+	public Vecteur resolution() throws IrregularSysLinException {
+	    int n = secondMembre.nbLigne();
+	    Vecteur p = new Vecteur(n);
+	    Vecteur q = new Vecteur(n);
+	    Vecteur solution = new Vecteur(n);
+	    
+	    // Calcul de p1 et q1
+	    p.remplacecoef(0, -matriceSystem.getCoeff(2, 0) / matriceSystem.getCoeff(1, 0));
+	    q.remplacecoef(0, secondMembre.getCoeff(0) / matriceSystem.getCoeff(1, 0));
+	    
+	    // Calcul de pk et qk pour k allant de 2 à n - 1
+	    for (int k = 1; k <= n - 2; k++) {
+	        double beta = matriceSystem.getCoeff(0, k) * p.getCoeff(k - 1) + matriceSystem.getCoeff(1, k);
+	        p.remplacecoef(k, -matriceSystem.getCoeff(2, k) / beta);
+	        q.remplacecoef(k, (secondMembre.getCoeff(k) - matriceSystem.getCoeff(0, k) * q.getCoeff(k - 1)) / beta);
+	    }
+	    
+	    // Calcul de xn
+	    double an = matriceSystem.getCoeff(0, n - 1);
+	    double bn = matriceSystem.getCoeff(1, n - 1);
+	    double dn = secondMembre.getCoeff(n - 1);
+	    solution.remplacecoef(n - 1, (dn - an * q.getCoeff(n - 2)) / (an * p.getCoeff(n - 2) + bn));
+	    
+	    // Calcul de xk pour k allant de n - 1 à 1
+	    for (int k = n - 2; k >= 0; k--) {
+	        solution.remplacecoef(k, p.getCoeff(k) * solution.getCoeff(k + 1) + q.getCoeff(k));
+	    }
+	    
+	    return solution;
+	}
+	
+	public static void main(String[] args) throws Exception {
+		System.out.println("Methode de Thomas");
+		double[][] tableau = { { 0, 1, 2, 3 }, 
+								{ 1, 3, 2, 1 }, 
+								{ 1, 1, 1, 0 }};
+		Mat3Diag mat3DiagA = new Mat3Diag(tableau);
+		Vecteur vect = new Vecteur(new double[] { 1, 2, 3, 4});
+		Thomas thomas = new Thomas(mat3DiagA, vect);
+		Vecteur solutionX = thomas.resolution();
+		System.out.println("Solution x : " +solutionX);
+		
+		Vecteur Ax = Mat3Diag.produit(mat3DiagA, solutionX);
+		System.out.println("Ax : " +Ax);
+		
+		Vecteur _b = new Vecteur(new double[] { -1, -2, -3, -4 });
+		System.out.println("b : " + _b);
+		Vecteur Ax_b = Vecteur.addition(Ax, _b);
+		double normeL1 = Vecteur.normeL1(Ax_b);
+		double normeL2 = Vecteur.normeL2(Ax_b);
+		double normeLinf = Vecteur.normeLinfini(Ax_b);
+		
+		System.out.println("NormeL1(Ax-b) = " + normeL1);
+		System.out.println("NormeL2(Ax-b) = " + normeL2);
+		System.out.println("NormeLinf(Ax-b) = " + normeLinf);
+		
+	}
+
+
+}

@@ -1,0 +1,43 @@
+public class HilbertMatrice extends Matrice {
+    public HilbertMatrice(int ordre) {
+        super(ordre, ordre);
+        genererMatrice();
+    }
+
+    private void genererMatrice() {
+        for (int i = 0; i < this.nbLigne(); i++) {
+            for (int j = 0; j < this.nbColonne(); j++) {
+                this.remplacecoef(i, j, 1.0 / (i + j + 1));
+            }
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+        for (int ordre = 3; ordre <= 15; ordre++) {
+            System.out.println("Ordre de la matrice de Hilbert : " + ordre);
+            HilbertMatrice hilbertMatrice = new HilbertMatrice(ordre);
+            System.out.println("Matrice de Hilbert :");
+            System.out.println(hilbertMatrice.toString());
+
+            // Calcul de l'inverse
+            Matrice inverse = hilbertMatrice.inverse();
+            System.out.println("Inverse de la matrice de Hilbert :");
+            System.out.println(inverse.toString());
+
+            // Vérification
+            Matrice produit = Matrice.produit(hilbertMatrice, inverse);
+            Matrice identite = Matrice.identite(ordre);
+            Matrice difference = Matrice.soustraction(produit, identite);
+            double norme_inf = difference.norme_inf();
+            System.out.println("Norme infinie de la différence entre la matrice produit et l'identité : " + norme_inf);
+
+            // Calcul des conditionnements
+            double cond_1 = inverse.cond_1();
+            double cond_inf = inverse.cond_inf();
+            System.out.println("Conditionnement de la matrice inversée (norme 1) : " + cond_1);
+            System.out.println("Conditionnement de la matrice inversée (norme infinie) : " + cond_inf);
+
+            System.out.println();
+        }
+    }
+}

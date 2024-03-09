@@ -1,0 +1,181 @@
+package AlgLin;
+
+public class Helder extends SysLin {
+	private SysTriangInfUnite L;
+	private SysDiagonal D;
+	private SysTriangSupUnite R;
+
+	public Helder(Matrice matrice, Vecteur secondMembre) throws IrregularSysLinException {
+		super(matrice, secondMembre);
+	}
+
+	public void factorLDR() {
+		int degre = getOrdre();
+		Matrice Li_ = new Matrice(degre, degre);
+		Matrice Di_ = new Matrice(degre, degre);
+		Matrice Ri_ = new Matrice(degre, degre);
+		Matrice A = getMatriceSystem();
+
+		// Initialisation de L, D et R
+		for (int i = 0; i < degre; i++) {
+			for (int j = 0; j < degre; j++) {
+				if (i == j) {
+					Di_.remplacecoef(i, j, A.getCoeff(i, j));
+					Li_.remplacecoef(i, j, 1);
+					Ri_.remplacecoef(i, j, 1);
+				} else if (i > j) {
+					Li_.remplacecoef(i, j, A.getCoeff(i, j));
+				} else {
+					Ri_.remplacecoef(i, j, A.getCoeff(i, j));
+				}
+			}
+		}
+
+		// Calcul des coefficients L, D et R en utilisant l'algo du TD
+		for (int i = 0; i < degre; i++) {
+			for (int j = 0; j < i; j++) {
+				// Calcul des coefficients de L
+				double sumL = 0;
+				for (int k = 0; k < j; k++) {
+					sumL += Li_.getCoeff(i, k) * Di_.getCoeff(k, k) * Ri_.getCoeff(k, j);
+				}
+				Li_.remplacecoef(i, j, (A.getCoeff(i, j) - sumL) / Di_.getCoeff(j, j));
+			}
+
+			// Calcul des coefficients de D
+			double sumD = 0;
+			for (int k = 0; k < i; k++) {
+				sumD += Li_.getCoeff(i, k) * Di_.getCoeff(k, k) * Ri_.getCoeff(k, i);
+			}
+			Di_.remplacecoef(i, i, A.getCoeff(i, i) - sumD);
+
+			// Calcul des coefficients de R
+			for (int j = i + 1; j < degre; j++) {
+				double sumR = 0;
+				for (int k = 0; k < i; k++) {
+					sumR += Li_.getCoeff(i, k) * Di_.getCoeff(k, k) * Ri_.getCoeff(k, j);
+				}
+				Ri_.remplacecoef(i, j, (A.getCoeff(i, j) - sumR) / Di_.getCoeff(i, i));
+			}
+		}
+
+		// Création des systèmes correspondants
+		try {
+			L = new SysTriangInfUnite(Li_, getSecondMembre());
+			D = new SysDiagonal(Di_, getSecondMembre());
+			R = new SysTriangSupUnite(Ri_, getSecondMembre());
+		} catch (IrregularSysLinException e) {
+			System.out.println("Erreur lors de la création des systèmes");
+		}
+	}
+
+	@Override
+	public Vecteur resolution() {
+		factorLDR();
+		Vecteur x = new Vecteur(getOrdre());
+		Vecteur y = new Vecteur(getOrdre());
+		Vecteur z = new Vecteur(getOrdre());
+		try {
+			L.setSecondMembre(getSecondMembre());
+			y = L.resolution();
+			D.setSecondMembre(y);
+			z = D.resolution();
+			R.setSecondMembre(z);
+			x = R.resolution();
+		} catch (IrregularSysLinException e) {
+			System.out.println("Erreur lors de la résolution");
+		}
+		return x;
+	}
+
+	public Vecteur resolutionPartielle() {
+		Vecteur x = new Vecteur(getOrdre());
+		Vecteur y = new Vecteur(getOrdre());
+		Vecteur z = new Vecteur(getOrdre());
+		try {
+			L.setSecondMembre(getSecondMembre());
+			y = L.resolution();
+			D.setSecondMembre(y);
+			z = D.resolution();
+			R.setSecondMembre(z);
+			x = R.resolution();
+		} catch (IrregularSysLinException e) {
+			System.out.println("Erreur lors de la résolution");
+		}
+		return x;
+	}
+
+	public void setSecondMembre(Vecteur newSecondMembre) {
+		super.setSecondMembre(newSecondMembre);
+		L.setSecondMembre(newSecondMembre);
+		D.setSecondMembre(newSecondMembre);
+		R.setSecondMembre(newSecondMembre);
+	}
+
+	public SysTriangInfUnite getL() {
+		return L;
+	}
+
+	public SysDiagonal getD() {
+		return D;
+	}
+
+	public SysTriangSupUnite getR() {
+		return R;
+	}
+
+	public static void main(String[] args) throws Exception {
+		// Cas 1 : Ax = b
+		System.out.println("Cas 1 : Ax = b");
+		Matrice matrice = new Matrice("./resources/matrice1.txt");
+		Vecteur secondMembre = new Vecteur("./resources/secondMembre.txt");
+
+		Helder helder = new Helder(matrice, secondMembre);
+		Vecteur solution = helder.resolution();
+
+		System.out.println("la matrice L :\n" + helder.getL().getMatriceSystem().toString());
+		System.out.println("la matrice D :\n " + helder.getD().getMatriceSystem().toString());
+		System.out.println("la matrice R :\n " + helder.getR().getMatriceSystem().toString());
+		System.out.println("Solution x de Ax = b : " + solution.toString());
+
+		// Cas 2 : A²x = b
+		System.out.println("\n\nCas 2 : A²x = b");
+		Matrice Acarre = Matrice.produit(matrice, matrice);
+		Helder helder2 = new Helder(Acarre, secondMembre);
+		Vecteur solution2 = helder2.resolution();
+		System.out.println("la matrice L :\n" + helder2.getL().getMatriceSystem().toString());
+		System.out.println("la matrice D :\n " + helder2.getD().getMatriceSystem().toString());
+		System.out.println("la matrice R :\n " + helder2.getR().getMatriceSystem().toString());
+		System.out.println("Solution x de A²x : " + solution2.toString());
+		
+		//Cas 3 : Ax - b
+		System.out.println("\n\nCas 3 : Ax - b");
+		helder.setSecondMembre(new Vecteur("./resources/secondMembre2.txt"));
+		System.out.println("-b : " + helder.getSecondMembre().toString());
+		Vecteur Ax = Vecteur.produit(matrice, solution);
+		System.out.println("Ax : " + Ax.toString());
+		
+		Vecteur somme = new Vecteur(Ax.getTaille());
+		for (int i = 0; i < Ax.getTaille(); i++) {
+			somme.remplacecoef(i, Ax.getCoeff(i) + helder.getSecondMembre().getCoeff(i));
+		}
+		System.out.println("Ax - b : " + somme.toString());
+		
+		Matrice Ax_b = Matrice.addition(Ax, helder.getSecondMembre());
+		System.out.println("Ax - b : " + Ax_b.toString());
+		Vecteur norme = new Vecteur(Ax_b.nbLigne());
+		for (int i = 0; i < Ax_b.nbLigne(); i++) {
+			norme.remplacecoef(i, Ax_b.getCoeff(i, 0));
+		}
+		
+		// Test de la norme
+		System.out.println("\n\nTest de la norme ");
+		double resNorme1 = Vecteur.normeL1(norme);
+		if (resNorme1 - 0.0 < Matrice.EPSILON) {
+			System.out.println("La norme du vecteur est null ou très petite");
+		}
+		
+
+
+	}
+}

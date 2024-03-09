@@ -1,0 +1,30 @@
+package AlgLin;
+
+public class SysTriangInfUnite extends SystTriangInf {
+
+    public SysTriangInfUnite(Matrice m, Vecteur v) throws IrregularSysLinException {
+        super(m, v);
+
+        // Vérification que la matrice est triangulaire inférieure avec des uns sur la diagonale
+        boolean b = true;
+        for (int i = 0; i < m.nbLigne(); i++) {
+            if (m.getCoef(i, i) != 1) {
+                b = false;
+                break;
+            }
+        }
+
+        if (!b) {
+            throw new IrregularSysLinException("La matrice n'est pas triangulaire inférieure avec des uns sur la diagonale.");
+        }
+    }
+
+    public static void main(String[] args) throws IrregularSysLinException {
+        double[] composants = {2, 5, 3};
+        Vecteur vecteur = new Vecteur(composants);
+        double[][] mat = {{1, 0, 0}, {2, 1, 0}, {6, 4, 1}};
+        Matrice matrice = new Matrice(mat);
+        SysLin sys = new SysTriangInfUnite(matrice, vecteur);
+        System.out.println(sys.resolution());
+    }
+}

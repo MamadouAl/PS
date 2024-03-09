@@ -1,0 +1,78 @@
+package AlgLin;
+
+public class SysTriangInfUnite extends SysLin {
+
+    public SysTriangInfUnite(Matrice matrice, Vecteur secondMembre) throws IrregularSysLinException {
+        super(matrice, secondMembre);
+        verifierTriangulaireInfUnite();
+    }
+
+    private void verifierTriangulaireInfUnite() throws IrregularSysLinException {
+        int ordre = this.getOrdre();
+
+        for (int i = 0; i < ordre; i++) {
+            if (this.getMatriceSystem().getCoeff(i, i) != 1) {
+                throw new IrregularSysLinException("La diagonale de la matrice n'est pas composée de 1.");
+            }
+
+            for (int j = i + 1; j < ordre; j++) {
+                if (this.getMatriceSystem().getCoeff(i, j) != 0) {
+                    throw new IrregularSysLinException("La matrice n'est pas triangulaire inférieure unitaire.");
+                }
+            }
+        }
+    }
+
+    @Override
+    public Vecteur resolution() throws IrregularSysLinException {
+        int ordre = this.getOrdre();
+        Vecteur solution = new Vecteur(ordre);
+
+        for (int i = 0; i < ordre; i++) {
+            double somme = 0;
+            for (int j = 0; j < i; j++) {
+                somme += this.getMatriceSystem().getCoeff(i, j) * solution.getCoeff(j);
+            }
+
+            solution.remplacecoef(i, this.getSecondMembre().getCoeff(i) - somme);
+        }
+
+        return solution;
+    }
+
+    public static void main(String[] args) throws IrregularSysLinException {
+        double[][] matriceCoeff = { { 1, 0, 0 }, { 2, 1, 0 }, { -1, 3, 1 } };
+        double[] secondMembreCoeff = { 1, 4, 2 };
+
+        Matrice matrice = new Matrice(matriceCoeff);
+        Vecteur vecteur = new Vecteur(secondMembreCoeff);
+
+        SysTriangInfUnite sys = new SysTriangInfUnite(matrice, vecteur);
+
+        Vecteur resolution = sys.resolution();
+        System.out.println(resolution);
+
+        Matrice resolu = new Matrice(resolution.getTaille(), 1);
+        for (int i = 0; i < resolu.nbLigne(); i++) {
+            resolu.remplacecoef(i, 0, resolution.getCoeff(i));
+        }
+
+        Matrice resultat = Matrice.produit(matrice, resolu); // Ax
+        Matrice resulatFinal = Matrice.soustraction(resultat, new Matrice(vecteur)); // Ax - b
+        Vecteur norme = new Vecteur(resulatFinal.nbLigne());
+        for (int i = 0; i < resulatFinal.nbLigne(); i++) {
+            norme.remplacecoef(i, resulatFinal.getCoeff(i, 0));
+        }
+
+        // Test de la norme
+        double resNorme1 = Vecteur.normeL1(norme);
+        double resNorme2 = Vecteur.normeL2(norme);
+        double resNormeInf = Vecteur.normeInfini(norme);
+        // Comparaison avec l'epsilon numérique
+        if (resNorme1 < Matrice.EPSILON && resNorme2 < Matrice.EPSILON && resNormeInf < Matrice.EPSILON) {
+            System.out.println("Le système est résolu avec précision.");
+        } else {
+            System.out.println("Le système n'est pas résolu avec précision.");
+        }
+    }
+}

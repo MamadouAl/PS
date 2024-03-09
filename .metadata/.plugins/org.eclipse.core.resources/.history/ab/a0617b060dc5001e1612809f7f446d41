@@ -1,0 +1,77 @@
+
+public class Mat3Diag extends Matrice {
+
+	public Mat3Diag(int dim1, int dim2) {
+		super(dim1, dim2);
+		if (dim1 != 3) {
+			throw new IllegalArgumentException("La matrice doit ne doit avoir que 3 lignes");
+		}
+	}
+
+	public Mat3Diag(double[][] tableau) {
+		super(tableau);
+		if (tableau.length != 3) {
+			throw new IllegalArgumentException("La matrice doit ne doit avoir que 3 lignes");
+		}
+	}
+
+	public Mat3Diag(int dim) {
+		super(3, dim);
+	}
+
+	/**
+	 * Permet de faire le produit d'une matrice tridiagonale par un vecteur
+	 */
+	public static Vecteur produit(Mat3Diag A, Vecteur x) {
+		int n = x.getTaille();
+
+		// Vérification des tailles
+		if (A.nbColonne() != n || A.nbLigne() != 3) {
+			throw new IllegalArgumentException(
+					"La taille de la matrice tridiagonale A et du vecteur x ne sont pas compatibles.");
+		}
+		Vecteur result = new Vecteur(n);
+		double[] a = new double[n]; // coefficients de la sous-diagonale
+		double[] b = new double[n]; // coefficients de la diagonale
+		double[] c = new double[n]; // coefficients de la sur-diagonale
+
+		// Initialisation des coefficients
+		for (int i = 0; i < n; i++) {
+			a[i] = A.getCoeff(0, i);
+			b[i] = A.getCoeff(1, i);
+			c[i] = A.getCoeff(2, i);
+		}
+
+		// Calcul des produits
+		for (int i = 0; i < n; i++) {
+			double di = 0.0;
+			if (i > 0) {
+				di += a[i] * x.getCoeff(i - 1);
+			}
+			di += b[i] * x.getCoeff(i);
+			if (i < n - 1) {
+				di += c[i] * x.getCoeff(i + 1);
+			}
+			result.remplacecoef(i, di);
+		}
+
+		return result;
+	}
+
+	public static void main(String[] args) throws Exception {
+		double[][] tableau = { { 0, 3, 6, 9 }, { 1, 4, 7, 10 }, { 2, 5, 8, 0 } };
+		double[][] tableau2 = { { 0, 1, 1 }, { 1, 2, 1 }, { 1, 1, 0 } };
+		double[][] tableau3 = { { 0, 1, 2, 3 }, { 1, 3, 2, 1 }, { 1, 1, 1, 0 } };
+		Mat3Diag matrice = new Mat3Diag(tableau3);
+		double[] valeurs = { 1, 2, 3, 4};
+
+		Vecteur vecteur = new Vecteur(valeurs);
+		System.out.println("Mat3Diag : \n" + matrice);
+
+		System.out.println("Vecteur : " + vecteur);
+
+		Vecteur resultat = Mat3Diag.produit(matrice, vecteur);
+		System.out.println("Résultat du produit : " + resultat);
+	}
+
+}

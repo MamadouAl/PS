@@ -1,0 +1,27 @@
+1707140779604	Rename local variable 'matrice'
+1707140791059	Rename local variable 'vecteur'
+1707140827712	Rename local variable 'v'
+1707140870133	Rename local variable 'resolution'
+1707141158135	Rename local variable 'resulatFinal'
+1707141341373	Rename local variable 'AX_B'
+1707141362706	Rename local variable 'Ax_B'
+1707141374674	Rename local variable '_B'
+1707141477501	Rename local variable 'resNorme1'
+1707141485565	Rename local variable 'resNorme2'
+1707141498431	Rename local variable 'resNormeInf'
+1707141514826	Rename method 'normeInfini'
+1707142656227	Rename local variable 'matrice'
+1707142679440	Rename local variable 'resolution'
+1707142931171	Rename local variable 'resultat'
+1707143274669	Rename local variable 'matrice'
+1707143285656	Rename local variable 'vecteur'
+1707144795468	Rename resource 'matrice1.txt'
+1707144816831	Rename resource 'matrice.txt'
+1707147577941	Rename local variable 'matrice'
+1707147585781	Rename local variable 'vecteur'
+1707147630967	Rename local variable 'vecteurA'
+1707212948638	Move compilation unit
+1707212982251	Copy compilation unit
+1707213031436	Copy compilation unit
+1707213040940	Copy compilation unit
+1707213054296	Copy compilation unit

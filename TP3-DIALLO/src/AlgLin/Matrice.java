@@ -5,12 +5,16 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class Matrice {
-	public static final String RESET = "\u001B[0m";
-    public static final String RED = "\u001B[31m";
-    public static final String GREEN = "\u001B[32m";
-	/** Définir ici les attributs de la classe **/
+	// Attributs de la classe
 	protected double coefficient[][];
 	public final static double EPSILON = 1e-6;
+
+	// Couleurs pour les messages
+	public static final String RESET = "\u001B[0m";
+	public static final String RED = "\u001B[31m";
+	public static final String GREEN = "\u001B[32m";
+	public static final String BLUE = "\u001B[34m";
+	public static final String BLACK = "\u001B[30m";
 
 	/** Définir ici les constructeur de la classe **/
 	Matrice(int nbligne, int nbcolonne) {
@@ -148,149 +152,130 @@ public class Matrice {
 		return mat;
 	}
 
-	/*
+	/* SUITE
 	 * *******************
 	 * 
 	 * DEBUT DU TP3
 	 * 
 	 * ****************
 	 */
+
+	/**
+	 * Renvoie la matrice identité d'ordre n.
+	 */
 	public static Matrice identite(int n) {
-	    Matrice identite = new Matrice(n, n);
-	    for (int i = 0; i < n; i++) {
-	        for (int j = 0; j < n; j++) {
-	            if (i == j) {
-	                identite.remplacecoef(i, j, 1);
-	            } else {
-	                identite.remplacecoef(i, j, 0);
-	            }
-	        }
-	    }
-	    return identite;
+		Matrice identite = new Matrice(n, n);
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				if (i == j) {
+					identite.remplacecoef(i, j, 1);
+				} else {
+					identite.remplacecoef(i, j, 0);
+				}
+			}
+		}
+		return identite;
 	}
 
-	
 	/**
 	 * Renvoie la matrice inverse de la matrice courante.
 	 * 
 	 * @return la matrice inverse
-	 * @throws IllegalOperationException si la matrice n'est pas carrée
+	 * @throws IrregularSysLinException si la matrice n'est pas carrée
 	 */
-	public Matrice inverse0() throws IrregularSysLinException {
-	    if (this.nbLigne() != this.nbColonne()) {
-	        throw new IrregularSysLinException("La matrice n'est pas carrée.");
-	    }
-
-	    Matrice identite = Matrice.identite(this.nbLigne());
-	    Matrice inverse = new  Matrice(this.nbLigne(), this.nbColonne());
-	    for (int i = 0; i < this.nbLigne(); i++) {
-	        Helder0 helder = new Helder0(this, new Vecteur(this.nbLigne()));
-	        if (helder.getL() == null) {
-	        	// Factorisation LDR 
-	        	helder.factorLDR();
-	        }
-
-	        // Initialisation du second membre par la colonne correspondante de la matrice identité
-	        Vecteur secondMembre = new Vecteur(this.nbLigne());
-	        for (int j = 0; j < this.nbLigne(); j++) {
-	            secondMembre.remplacecoef(j, identite.getCoeff(j, i)); // Utilisation de la colonne i de l'identité
-	        }
-	        if (helder.getL() != null) {
-	            helder.setSecondMembre(secondMembre);
-	            Vecteur solution = helder.resolution();
-
-	            //Remplacer la colonne i de la matrice identité par la solution
-	            for (int j = 0; j < this.nbLigne(); j++) {
-	            	inverse.remplacecoef(j, i, solution.getCoeff(j));
-	            }
-	        } else {
-	            throw new IrregularSysLinException("Probleme d'initialisation de la factorisation LDR");
-	        }
-	    }
-	    return inverse;
-	}
-	
 	public Matrice inverse() throws IrregularSysLinException {
-	    int n = this.nbLigne();
-	    Matrice identite = Matrice.identite(n);
-	    Matrice inverse = new Matrice(n, n);
-	    
-	    // Factorisation LDR de la matrice A
-	    Helder helder = new Helder(this, new Vecteur(n));
-	    helder.factorLDR();
-	    
-	    // Résolution des systèmes linéaires
-	    for (int i = 0; i < n; i++) {
-	        // Construction du second membre (colonne de la matrice identité)
-	        Vecteur secondMembre = new Vecteur(n);
-	        for (int j = 0; j < n; j++) {
-	            secondMembre.remplacecoef(j, (j == i) ? 1.0 : 0.0);
-	        }
-	        
-	        // Résolution du systeme Ax = e(i)
-	        helder.setSecondMembre(secondMembre);
-	        Vecteur solution = helder.resolutionPartielle();
-	        
-	        // Stockage de la solution comme colonne de la matrice inverse
-	        for (int j = 0; j < n; j++) {
-	            inverse.remplacecoef(j, i, solution.getCoeff(j));
-	        }
-	    }
-	    
-	    return inverse;
+		if (this.nbLigne() != this.nbColonne()) {
+			throw new IrregularSysLinException("La matrice n'est pas carrée.");
+		}
+		int n = this.nbLigne();
+		Matrice inverse = new Matrice(n, n);
+
+		// Factorisation LDR de la matrice A
+		Helder helder = new Helder(this, new Vecteur(n));
+		helder.factorLDR();
+
+		// Résolution des systèmes linéaires
+		for (int i = 0; i < n; i++) {
+			// Construction du second membre (colonne de la matrice identité)
+			Vecteur secondMembre = new Vecteur(n);
+			for (int j = 0; j < n; j++) {
+				secondMembre.remplacecoef(j, (j == i) ? 1.0 : 0.0);
+			}
+
+			// Résolution du systeme Ax = e(i)
+			helder.setSecondMembre(secondMembre);
+			Vecteur solution = helder.resolutionPartielle();
+
+			for (int j = 0; j < n; j++) {
+				inverse.remplacecoef(j, i, solution.getCoeff(j));
+			}
+		}
+		return inverse;
 	}
 
-
-
-	
+	/**
+	 * Calcule la norme 1 de la matrice courante.
+	 * 
+	 * @return
+	 */
 	public double norme_1() {
-	    double norme = 0.0;
-	    for (int j = 0; j < this.nbColonne(); j++) {
-	        double sommeColonne = 0.0;
-	        for (int i = 0; i < this.nbLigne(); i++) {
-	            sommeColonne += Math.abs(this.coefficient[i][j]);
-	        }
-	        norme = Math.max(norme, sommeColonne);
-	    }
-	    return norme;
+		double norme = 0.0;
+		for (int j = 0; j < this.nbColonne(); j++) {
+			double sommeColonne = 0.0;
+			for (int i = 0; i < this.nbLigne(); i++) {
+				sommeColonne += Math.abs(this.coefficient[i][j]);
+			}
+			norme = Math.max(norme, sommeColonne);
+		}
+		return norme;
 	}
-	
-	//A Tester !!!
+
+	/**
+	 * Calcule la norme infinie de la matrice courante.
+	 * 
+	 * @return
+	 */
 	public double norme_inf() {
-	    double norme = 0.0;
-	    for (int i = 0; i < this.nbLigne(); i++) {
-	        double sommeLigne = 0.0;
-	        for (int j = 0; j < this.nbColonne(); j++) {
-	            sommeLigne += Math.abs(this.coefficient[i][j]);
-	        }
-	        norme = Math.max(norme, sommeLigne);
-	    }
-	    return norme;
+		double norme = 0.0;
+		for (int i = 0; i < this.nbLigne(); i++) {
+			double sommeLigne = 0.0;
+			for (int j = 0; j < this.nbColonne(); j++) {
+				sommeLigne += Math.abs(this.coefficient[i][j]);
+			}
+			norme = Math.max(norme, sommeLigne);
+		}
+		return norme;
 	}
 
+	/**
+	 * Calcule le conditionnement de la matrice courante.
+	 * 
+	 * @return
+	 */
 	public double cond_1() throws Exception {
-	    Matrice inverse = this.inverse();
-	    double norme1 = this.norme_1(); 
-	    double norme1_inverse = inverse.norme_1();
-	    if (norme1_inverse == 0) {
-	        throw new Exception("La norme 1 de la matrice inverse est nulle.");
-	    }
-	    return norme1 * norme1_inverse;
+		Matrice inverse = this.inverse();
+		double norme1 = this.norme_1();
+		double norme1_inverse = inverse.norme_1();
+		if (norme1_inverse == 0) {
+			throw new Exception("La norme 1 de la matrice inverse est nulle.");
+		}
+		return norme1 * norme1_inverse;
 	}
 
+	/**
+	 * Calcule le conditionnement de la matrice courante.
+	 * 
+	 * @return
+	 */
 	public double cond_inf() throws Exception {
-	    Matrice inverse = this.inverse(); 
-	    double norme_inf = this.norme_inf(); 
-	    double norme_inf_inverse = inverse.norme_inf();
-	    if (norme_inf_inverse == 0) {
-	        throw new Exception("La norme infinie de la matrice inverse est nulle.");
-	    }
-	    return norme_inf * norme_inf_inverse;
+		Matrice inverse = this.inverse();
+		double normeInf = this.norme_inf();
+		double normeInfInverse = inverse.norme_inf();
+		if (normeInfInverse == 0) {
+			throw new Exception("La norme infinie de la matrice inverse est nulle.");
+		}
+		return normeInf * normeInfInverse;
 	}
-
-
-
-
 
 	public static void main(String[] args) throws Exception {
 		double mat[][] = { { 2, 1 }, { 0, 1 } };
@@ -307,44 +292,55 @@ public class Matrice {
 		b.remplacecoef(1, 1, 8);
 		System.out.println("Vérification de la modification du coefficient");
 		System.out.println("Coefficient (2,2) de la matrice b : " + b.getCoeff(1, 1));
-		System.out.println("Addition de 2 matrices : affichage des 2 matrices " + "puis de leur addition");
-		System.out.println("matrice 1 :\n" + a + "matrice 2 :\n" + b + "somme :\n" + Matrice.addition(a, b));
+		System.out.println("\nAddition de 2 matrices : affichage des 2 matrices " + "puis de leur addition");
+		System.out.println("\nmatrice 1 :\n" + a + "matrice 2 :\n" + b + "somme :\n" + Matrice.addition(a, b));
 		System.out.println("Produit de 2 matrices : affichage des 2 matrices " + "puis de leur produit");
 		System.out.println("matrice 1 :\n" + a + "matrice 2 :\n" + b + "produit :\n" + produit(a, b));
-		
+
 		/**
-		 * **********************************
-		 * TEST D'INVERSION DE MATRICE
+		 * ********************************** TEST D'INVERSION DE MATRICE
 		 */
+		System.out.println(BLUE + "\n**************** INVERSE ******************\n" + RESET);
 		Matrice matrice = new Matrice("./resources/matrice1.txt");
 		System.out.println("Matrice à inverser :\n" + matrice);
+
 		Matrice copie = new Matrice(matrice.nbLigne(), matrice.nbColonne());
 		copie.recopie(matrice);
+
 		Matrice inverse = matrice.inverse();
 		System.out.println("Matrice inverse :\n" + inverse);
-		
-		// Test de la multiplication de la matrice par son inverse
+
+		System.out.println(BLUE + "\n**************** PRODUIT A*A^-1 ******************\n" + RESET);
+		// Calcul de A * A^-1
 		Matrice produit = Matrice.produit(copie, inverse);
-		System.out.println("Produit de la matrice par son inverse :\n" + produit);
-		
-		//Verification 
 		Matrice identite = Matrice.identite(matrice.nbLigne());
-		//calculer -Idenetite + produit
+		System.out.println("Matrice produit ->  A * A^-1 : \n" + produit);
+
+		// Calcul de : A * A^-1 - Id
 		Matrice diff = Matrice.addition(produit, identite.produit(-1));
-		System.out.println("Difference entre le produit et l'identite :\n" + diff);
-		
-		// Test de la norme 1
+
+		// Calcul des normes
+		System.out.println(BLUE + "\n**************** NORMES ******************\n" + RESET);
 		double norme1 = diff.norme_1();
 		if (norme1 < Matrice.EPSILON) {
-			System.out.println(GREEN +"La norme 1 est nulle"+ RESET);
+			System.out.println(GREEN + "La norme 1 est nulle" + RESET);
 		} else {
-			System.out.println(RED + "La norme 1 est non nulle"+ RESET);
+			System.out.println(RED + "La norme 1 est non nulle" + RESET);
 		}
+
 		double norme_inf = diff.norme_inf();
 		if (norme_inf < Matrice.EPSILON) {
-			System.out.println(GREEN +"La norme infinie est nulle"+ RESET);
+			System.out.println(GREEN + "La norme infinie est nulle" + RESET);
 		} else {
-			System.out.println(RED + "La norme infinie est non nulle"+ RESET);
+			System.out.println(RED + "La norme infinie est non nulle" + RESET);
 		}
+
+		// Calcul des conditionnements
+		System.out.println(BLUE + "\n**************** CONDITIONNEMENTS ******************\n" + RESET);
+		double cond_1 = inverse.cond_1();
+		double cond_inf = inverse.cond_inf();
+		System.out.println("Conditionnement (norme 1) : " + cond_1);
+		System.out.println("Conditionnement (norme INFINI) : " + cond_inf);
+
 	}
 }

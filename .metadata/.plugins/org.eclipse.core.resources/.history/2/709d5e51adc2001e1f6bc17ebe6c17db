@@ -1,0 +1,35 @@
+package AlgLin;
+
+public class SysTriangSupUnite extends SysTriangSup {
+
+    SysTriangSupUnite(Matrice m, Vecteur v) throws IrregularSysLinException {
+        super(m, v);
+        
+        // Vérification que la matrice est triangulaire supérieure avec des uns sur la diagonale
+        boolean b = true;
+        for (int i = 0; i < m.nbLigne(); i++) {
+            if (m.getCoef(i, i) != 1) {
+                b = false;
+                break;
+            }
+        }
+        
+        if (!b) {
+            throw new IrregularSysLinException("La matrice n'est pas triangulaire supérieure unite.");
+        }
+    }
+    
+    @Override
+    public Vecteur resolution() throws IrregularSysLinException {
+       return super.resolution();
+    }
+
+    public static void main(String[] args) throws IrregularSysLinException {
+        double[] composants = {2, 1, -13};
+        Vecteur vecteur = new Vecteur(composants);
+        double[][] mat = {{1, 3, 4}, {0, 1, 5}, {0, 0, 1}};
+        Matrice matrice = new Matrice(mat);
+        SysLin sys = new SysTriangSupUnite(matrice, vecteur);
+        System.out.println(sys.resolution());
+    }
+}

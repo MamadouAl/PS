@@ -1,0 +1,26 @@
+package AlgLin;
+
+public class Helder extends SysLin {
+
+	public Helder(Matrice m, Vecteur v) throws IrregularSysLinException {
+		super(m, v);
+	}
+	
+	public void factorLDR() throws IrregularSysLinException {
+		SysTriangInfUnite L = new SysTriangInfUnite(matriceSystem, secondMembre); // ly = b
+		SysDiagonal D = new SysDiagonal(getMatriceSystem(), L.resolution()); // dz = y
+		SysTriangSupSupUnite R = new SysTriangSupSupUnite(matriceSystem, D.resolution()); // rx = z
+		
+		
+	}
+
+	@Override
+	public Vecteur resolution() throws IrregularSysLinException {
+		factorLDR(); //on factorise la matrice en LDLt 
+		SysTriangInfUnite L = new SysTriangInfUnite(matriceSystem, getSecondMembre()); // ly = b
+		SysDiagonal D = new SysDiagonal(getMatriceSystem(), L.resolution()); // dz = y
+		SysTriangSupSupUnite R = new SysTriangSupSupUnite(getMatriceSystem(), D.resolution()); // rx = z
+		return R.resolution();
+	}
+
+}

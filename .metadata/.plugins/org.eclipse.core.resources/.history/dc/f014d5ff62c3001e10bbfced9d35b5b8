@@ -1,0 +1,90 @@
+package AlgLin;
+
+public class SysTriangInfUnite extends SysTriangInf{
+
+    /**
+     * constructeur de la classe SysTriangInfUnite
+     * 
+     * @param A
+     * @param b
+     * @throws IrregularSysLinException
+     */
+    public SysTriangInfUnite(Matrice A, Vecteur b) throws IrregularSysLinException {
+        super(A, b);
+        if (!estTriangInfUnite()) {
+            throw new IrregularSysLinException("La matrice n'est pas triangulaire inférieure unité");
+        }
+    }
+
+    /**
+     * Méthode qui vérifie si la matrice est triangulaire inférieure unité
+     * 
+     * @return
+     */
+
+    private boolean estTriangInfUnite() {
+        for (int i = 0; i < getOrdre(); i++) {
+            if(getMatriceSystem().getCoef(i, i) != 1) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Méthode qui résout le système linéaire
+     * 
+     * @return
+     * @throws IrregularSysLinException
+     */
+
+    @Override
+    public Vecteur resolution() {
+       return super.resolution();
+    }
+    
+/*
+    public static void main(String[] args) throws IrregularSysLinException {
+        // Code pour tester les méthodes de la classe
+        double[][] tab_A = { { 1, 0, 0 }, { 3, 1, 0 }, { 5, 6, 1 } }; // matrice A
+        double[] tab_b = { 1, 2, 3 }; // vecteur b
+
+        Matrice A = new Matrice(tab_A);
+        Vecteur b = new Vecteur(tab_b);
+
+        // On crée une instance de SysLinTriangInf avec la matrice A et le vecteur b
+        SysTriangInfUnite sys = null;
+        try {
+            sys = new SysTriangInfUnite(A, b);
+        } catch (IrregularSysLinException e) {
+            System.out.println(e.getMessage());
+        }
+        
+
+        // On recopie la matrice et le second membre pour ne pas les altérer pendant la
+        // résolution
+        Matrice Acopie = sys.getMatriceSystem();
+        Vecteur bcopie = sys.getSecondMembre();
+
+        // On résout le système
+        Vecteur x = null;
+        x = sys.resolution();
+
+        // On affiche la solution
+        System.out.println("La solution du système est :");
+        System.out.println(x.toString());
+
+        // On vérifie que la solution est correcte
+        Vecteur Ax_b = Vecteur.addition(Matrice.produit(Acopie, x), bcopie.produit(-1));
+
+        // On verifie la solution est plus petite que l'epsilon numérique
+        System.out.println("Norme L1 de Ax-b : " + Vecteur.normeL1(Ax_b));
+        System.out.println("Norme L2 de Ax-b : " + Vecteur.normeL2(Ax_b));
+        System.out.println("Norme Linfini de Ax-b : " + Vecteur.normeLInfini(Ax_b));
+        if (Vecteur.normeL2(Ax_b) < Matrice.EPSILON_NUMERIQUE) {
+            System.out.println("La norme du vecteur Ax-b est plus petite que l'épsilon numérique.");
+        } else {
+            System.out.println("La norme du vecteur Ax-b n'est pas plus petite que l'épsilon numérique.");
+        }
+    } */
+}

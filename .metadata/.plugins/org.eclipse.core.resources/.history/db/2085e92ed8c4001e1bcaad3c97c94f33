@@ -1,0 +1,18 @@
+
+public class Mat3Diag extends Matrice {
+	
+	public Mat3Diag(int dim1, int dim2) {
+		super(dim1, dim2);
+		if(dim1 !=3) {
+			throw new IllegalArgumentException("La matrice doit ne doit avoir que 3 lignes");
+		}
+	}
+
+	Mat3Diag(double[][] tableau) {
+		super(tableau);
+		if (this.nbLigne() != 3) {
+			throw new IllegalArgumentException("La matrice doit ne doit avoir que 3 lignes");
+		}
+	}
+
+}

@@ -1,0 +1,62 @@
+
+public class Mat3Diag extends Matrice {
+
+	public Mat3Diag(int dim1, int dim2) {
+		super(dim1, dim2);
+		if (dim1 != 3) {
+			throw new IllegalArgumentException("La matrice doit ne doit avoir que 3 lignes");
+		}
+	}
+
+	public Mat3Diag(double[][] tableau) {
+		super(tableau);
+		if (tableau.length != 3) {
+			throw new IllegalArgumentException("La matrice doit ne doit avoir que 3 lignes");
+		}
+	}
+
+	public Mat3Diag(int dim) {
+		super(3, dim);
+	}
+
+	/**
+	 * Permet de faire le produit d'une matrice tridiagonale par un vecteur
+	 */
+	public static Vecteur produit(Mat3Diag mat, Vecteur vect) throws Exception {
+		if (mat.nbColonne() != vect.getTaille() || mat.nbLigne() != 3) {
+			throw new Exception("Les dimensions de la matrice et du vecteur ne sont pas compatibles");
+		}
+		double[] resultats = new double[mat.nbLigne()];
+		// Calcul du produit
+		for (int i = 0; i < mat.nbLigne(); i++) {
+			resultats[i] += mat.coefficient[1][i] * vect.getCoeff(i); // Diagonale
+			if (i > 0) {
+				resultats[i] += mat.coefficient[0][i] * vect.getCoeff(i - 1); // Sous-diagonale
+			}
+			if (i < mat.nbLigne() - 1) {
+				resultats[i] += mat.coefficient[2][i] * vect.getCoeff(i + 1); // Sur-diagonale
+			}
+		}
+		return new Vecteur(resultats);
+	}
+	
+	
+	public static void main(String[] args) throws Exception {
+            double[][] tableau = {
+                {1, 2, 0},
+                {3, 4, 5},
+                {0, 6, 7}
+            };
+            Mat3Diag matrice = new Mat3Diag(tableau);
+            double[] valeurs = {1, 2, 3};
+            
+            Vecteur vecteur = new Vecteur(valeurs);
+            System.out.println("Mat3Diag : \n" + matrice);
+       
+            System.out.println("Vecteur : " + vecteur);
+
+            Vecteur resultat = Mat3Diag.produit(matrice, vecteur);
+            System.out.println("Résultat du produit : " + resultat);
+    }
+
+}
