@@ -13,7 +13,6 @@ import javax.swing.*;
 import org.lucci.up.data.*;
 import org.lucci.up.data.math.*;
 import org.lucci.up.data.rendering.*;
-import org.lucci.up.data.rendering.figure.ClosedNaturalCubicSplineFigureRenderer;
 import org.lucci.up.data.rendering.figure.ConnectedLineFigureRenderer;
 import org.lucci.up.data.rendering.figure.FigureRenderer;
 import org.lucci.up.data.rendering.point.HistogramPointRenderer;
@@ -103,9 +102,9 @@ public class Demo
 		figure.addPoint( new Point( 1, 1 ) );
 		figure.addPoint( new Point( 1, 1 ) );
 		figure.addPoint( new Point( 1, 1 ) );
-		DataElementRenderer renderer = new ClosedNaturalCubicSplineFigureRenderer();
-		renderer.setColor(Color.black);
-		figure.addRenderer(renderer);
+		//DataElementRenderer renderer = new ClosedNaturalCubicSplineFigureRenderer();
+		//renderer.setColor(Color.black);
+		//figure.addRenderer(renderer);
 
 		SwingPlotter plotter = new SwingPlotter();
 		plotter.setImageBufferedUsed(false);

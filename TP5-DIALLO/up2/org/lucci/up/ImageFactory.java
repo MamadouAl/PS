@@ -11,10 +11,6 @@ import javax.imageio.*;
 import org.lucci.up.system.*;
 import java.io.StringWriter;
 
-import org.apache.batik.dom.svg.SVGDOMImplementation;
-import org.apache.batik.svggen.SVGGraphics2D;
-import org.apache.batik.svggen.SVGGraphics2DIOException;
-import org.apache.batik.util.SVGConstants;
 import org.lucci.up.system.*;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -92,8 +88,10 @@ public class ImageFactory
 	 * @param height
 	 * @return String
 	 */
+
 	public String getSVGCode( int width, int height )
 	{
+		/*
 		DOMImplementation impl = SVGDOMImplementation.getDOMImplementation();
 		String namespaceURI = SVGDOMImplementation.SVG_NAMESPACE_URI;
 		Document document = impl.createDocument(namespaceURI, SVGConstants.SVG_SVG_TAG, null);
@@ -111,7 +109,8 @@ public class ImageFactory
 			throw new IllegalStateException( "Batik couldn't write SVG code" );
 		}
 
-		return writer.getBuffer().toString();
+		return writer.getBuffer().toString();*/
+		return "";
 	}
 
 	private byte[] createImageData( RenderedImage image, String type )
