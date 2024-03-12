@@ -1,0 +1,21 @@
+package AlgLin;
+
+/**
+ * Classe qui permet de manipuler les méthodes d'interpolation par spline
+ * cubique pour des fonctions réelles d'une variable réelle.
+ * 
+ * @author DIALLO Mamadou Aliou
+ * 
+ */
+public class Spline {
+	// Attributs
+	private double[] tableau;
+
+	// Constructeur
+	public Spline(double[] tableau) {
+		this.tableau = tableau;
+	}
+
+	// Méthodes
+
+}

@@ -1,0 +1,51 @@
+package AlgLin;
+
+/**
+ * Classe qui permet de manipuler les méthodes d'interpolation par spline
+ * cubique pour des fonctions réelles d'une variable réelle.
+ * 
+ * @author DIALLO Mamadou Aliou
+ * 
+ */
+public class Spline {
+	// Attributs
+	private double[] abX;
+	private double[] ordY;
+	private double[] deriveeSeconde;
+
+	// Constructeur
+	public Spline(double[] abscisses, double[] ordonnees) {
+		if (abscisses.length != ordonnees.length) {
+			throw new IllegalArgumentException("Les tableaux x et y doivent avoir la même longueur");
+		}
+		if (abscisses.length < 2) {
+			throw new IllegalArgumentException("Il faut au moins deux points de support");
+		}
+		this.abX = abscisses;
+		this.ordY = ordonnees;
+		deriveeSeconde = calculDeriveeSeconde(abscisses, ordonnees);
+	}
+
+	/**
+	 * Méthode qui permet de calculer la dérivée seconde de la fonction interpolée
+	 * par spline cubique.
+	 */
+	private double[] calculDeriveeSeconde(double[] abscisses, double[] ordonnees) {
+
+		return null;
+	}
+
+	/**
+	 * Méthode qui permet d'évaluer la fonction interpolée par spline cubique en un
+	 * point donné.
+	 */
+	public double evaluate(double val) throws DataOutOfRangeException {
+		// Vérification si la valeur x est dans l'intervalle des abscisses des points de
+		// support
+		if (val < abX[0] || val > abX[abX.length - 1]) {
+			throw new DataOutOfRangeException("La valeur fournie est en dehors de la plage des données d'entrée.");
+		}
+		return val;
+	}
+
+}

@@ -1,0 +1,71 @@
+package AlgLin;
+
+/**
+ * Classe qui permet de manipuler les méthodes d'interpolation par spline
+ * cubique pour des fonctions réelles d'une variable réelle.
+ * 
+ * @author DIALLO Mamadou Aliou
+ * 
+ */
+public class Spline {
+	// Attributs
+	private double[] abX;
+	private double[] ordY;
+	private double[] deriveeSeconde;
+
+	// Constructeur
+	public Spline(double[] abscisses, double[] ordonnees) {
+		if (abscisses.length != ordonnees.length) {
+			throw new IllegalArgumentException("Les tableaux x et y doivent avoir la même longueur");
+		}
+		if (abscisses.length < 2) {
+			throw new IllegalArgumentException("Il faut au moins deux points de support");
+		}
+		this.abX = abscisses;
+		this.ordY = ordonnees;
+		deriveeSeconde = calculDeriveeSeconde(abscisses, ordonnees);
+	}
+
+	/**
+	 * Méthode qui permet de calculer la dérivée seconde de la fonction interpolée
+	 * par spline cubique.
+	 */
+	private double[] calculDeriveeSeconde(double[] x, double[] y) {
+		int n = x.length;
+		double[] g = new double[n];
+
+		// Initialisation des valeurs
+		g[0] = 0;
+		g[n - 1] = 0;
+
+		// Calcul des dérivées secondes
+		double b1 = 2 * (x[2] - x[0]);
+		double d1 = x[2] - x[1];
+		double e1 = 6 * ((y[2] - y[1]) / (x[2] - x[1]) - (0) / (x[1] - x[0]));
+		g[1] = e1 / b1;
+
+		for (int j = 2; j <= n - 2; j++) {
+			double aj = x[j + 1] - x[j - 1];
+			double bj = 2 * (x[j + 1] - x[j - 1]);
+			double dj = x[j + 1] - x[j];
+			double ej = 6 * (((y[j + 1] - y[j]) / dj) - ((y[j] - y[j - 1]) / aj));
+			g[j] = (ej - aj * g[j - 1]) / bj;
+		}
+		return g;
+	}
+
+	/**
+	 * Méthode qui permet d'évaluer la fonction interpolée par spline cubique en un
+	 * point donné.
+	 */
+	public double evaluate(double val) throws DataOutOfRangeException {
+		// Vérification si la valeur x est dans l'intervalle des abscisses des points de
+		// support
+		if (val < abX[0] || val > abX[abX.length - 1]) {
+			throw new DataOutOfRangeException("La valeur fournie est en dehors de la plage des données d'entrée.");
+		}
+		//..
+		return val;
+	}
+
+}
