@@ -104,11 +104,12 @@ public class Spline {
 	 * Méthode qui permet d'évaluer la fonction interpolée par spline cubique en un
 	 * point donné.
 	 */
-	public double evaluateSpline(double val) throws DataOutOfRangeException {
+	public double evaluateSpline(double val) {
 		// Vérification si la valeur x est dans l'intervalle des abscisses des points de
 		// support
 		if (val < abX[0] || val > abX[abX.length - 1]) {
-			throw new DataOutOfRangeException("La valeur fournie est en dehors de la plage des données d'entrée.");
+			return 0;
+			//throw new DataOutOfRangeException("La valeur fournie est en dehors de la plage des données d'entrée.");
 		}
 
 		// Recherche de l'intervalle contenant la valeur
@@ -128,7 +129,7 @@ public class Spline {
 		return y;
 	}
 
-	public void afficheGraphe(Spline spline) throws DataOutOfRangeException {
+	public void afficheGraphe()  {
 		JFrame frame = new JFrame( "Graphe sur les splines Cubique" );
 		java.awt.Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int side = (int) (screenSize.getHeight() * 0.5);
@@ -204,7 +205,7 @@ public class Spline {
         for (int i = 0; i < nbValeurs; i++) {
             System.out.println("Valeur " + (i + 1) + " : " + valeursInterpolees[i]);
         }*/
-		spline.afficheGraphe(spline);
+		spline.afficheGraphe();
     }
 
 }
