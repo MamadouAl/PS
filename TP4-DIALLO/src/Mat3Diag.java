@@ -67,7 +67,7 @@ public class Mat3Diag extends Matrice {
 		System.out.println("Vecteur : " + vect);
         System.out.println("Resultat du produit : "+ y);
 		
-		double[][] tableau1 = {{ 2, 5, 8, 0 }, { 1, 4, 7, 10 }, { 0, 3, 6, 9 }  };
+		double[][] tableau1 = {{ 0, 3, 6, 9}, { 1, 4, 7, 10 }, { 2, 5, 8, 0 }};
 		Mat3Diag matriceB = new Mat3Diag(tableau1);
 		Vecteur v2 = new Vecteur(new double[] { 4, 5, 6, 7 });
 		Vecteur resultat2 = Mat3Diag.produit(matriceB, v2);

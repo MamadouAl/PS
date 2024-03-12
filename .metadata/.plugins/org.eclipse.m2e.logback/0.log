@@ -25,3 +25,32 @@
 2024-03-04 18:49:06,967 [Worker-8: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is out-of-date. Trying to update.
 2024-03-09 16:11:32,094 [Worker-7: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is out-of-date. Trying to update.
 2024-03-09 16:11:32,332 [Worker-7: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Updating Gradle version information cache failed. Using outdated cache.
+2024-03-12 09:37:59,503 [Worker-0: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is out-of-date. Trying to update.
+2024-03-12 10:37:53,247 [Worker-58: Importing Maven projects] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: AlgLin:TP5-DIALLO:1.0-SNAPSHOT @ C:\Users\tygaa\OneDrive\Documents\Cours\L3 info\S6\PS\TP5-DIALLO\pom.xml.
+2024-03-12 10:37:55,273 [Worker-58: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /TP5-DIALLO/src/main/java
+2024-03-12 10:37:55,274 [Worker-58: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /TP5-DIALLO/src/main/resources
+2024-03-12 10:37:55,275 [Worker-58: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /TP5-DIALLO/src/test/java
+2024-03-12 10:37:55,276 [Worker-58: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /TP5-DIALLO/src/test/resources
+2024-03-12 10:37:55,465 [Worker-58: Importing Maven projects] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Imported and configured 1 project(s) in 5 sec
+2024-03-12 10:37:55,816 [Worker-61: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+2024-03-12 10:37:55,817 [Worker-61: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\tygaa\OneDrive\Documents\Cours\L3 info\S6\PS\TP5-DIALLO\src\main\resources
+2024-03-12 10:37:55,824 [Worker-61: Building] WARN  o.a.m.s.f.DefaultMavenResourcesFiltering - Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+2024-03-12 10:37:55,825 [Worker-61: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Users\tygaa\OneDrive\Documents\Cours\L3 info\S6\PS\TP5-DIALLO\src\test\resources
+2024-03-12 10:37:56,351 [Worker-62: Download sources and javadoc] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading https://repo.maven.apache.org/maven2/junit/junit/3.8.1/junit-3.8.1-sources.jar
+2024-03-12 10:37:56,408 [Worker-62: Download sources and javadoc] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded https://repo.maven.apache.org/maven2/junit/junit/3.8.1/junit-3.8.1-sources.jar
+2024-03-12 10:37:56,415 [Worker-62: Download sources and javadoc] INFO  o.e.m.j.internal.DownloadSourcesJob - Downloaded sources for junit:junit:3.8.1
+2024-03-12 10:40:58,629 [Worker-64: Importing Maven projects] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: AlgLin:TP5-DIALLO:1.0-SNAPSHOT @ C:\Users\tygaa\OneDrive\Documents\Cours\L3 info\S6\PS\TP5-DIALLO\pom.xml.
+2024-03-12 10:41:00,623 [Worker-64: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /TP5-DIALLO/src/main/java
+2024-03-12 10:41:00,623 [Worker-64: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /TP5-DIALLO/src/main/resources
+2024-03-12 10:41:00,637 [Worker-64: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding source folder /TP5-DIALLO/src/test/java
+2024-03-12 10:41:00,637 [Worker-64: Importing Maven projects] INFO  o.e.m.j.i.AbstractJavaProjectConfigurator - Adding resource folder /TP5-DIALLO/src/test/resources
+2024-03-12 10:41:01,120 [Worker-64: Importing Maven projects] INFO  o.e.m.c.i.p.ProjectConfigurationManager - Imported and configured 1 project(s) in 7 sec
+2024-03-12 10:41:01,438 [Worker-66: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2024-03-12 10:41:01,438 [Worker-66: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\tygaa\OneDrive\Documents\Cours\L3 info\S6\PS\TP5-DIALLO\src\main\resources
+2024-03-12 10:41:01,443 [Worker-66: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2024-03-12 10:41:01,443 [Worker-66: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\tygaa\OneDrive\Documents\Cours\L3 info\S6\PS\TP5-DIALLO\src\test\resources
+2024-03-12 10:41:23,354 [Worker-68: Building] INFO  o.e.m.c.i.l.LifecycleMappingFactory - Using org.eclipse.m2e.jdt.JarLifecycleMapping lifecycle mapping for MavenProject: AlgLin:TP5-DIALLO:1.0-SNAPSHOT @ C:\Users\tygaa\OneDrive\Documents\Cours\L3 info\S6\PS\TP5-DIALLO\pom.xml.
+2024-03-12 10:41:23,650 [Worker-68: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2024-03-12 10:41:23,650 [Worker-68: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\tygaa\OneDrive\Documents\Cours\L3 info\S6\PS\TP5-DIALLO\src\main\resources
+2024-03-12 10:41:23,657 [Worker-68: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2024-03-12 10:41:23,658 [Worker-68: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\tygaa\OneDrive\Documents\Cours\L3 info\S6\PS\TP5-DIALLO\src\test\resources

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename local variable &apos;sommeColonne&apos; in &apos;AlgLin.Matrice.norme_1()&apos; to &apos;sum&apos;&#x0D;&#x0A;- Original project: &apos;TP3-DIALLO&apos;&#x0D;&#x0A;- Original element: &apos;AlgLin.Matrice.norme_1().sommeColonne&apos;&#x0D;&#x0A;- Renamed element: &apos;sommeColonne&apos;&#x0D;&#x0A;- Update references to refactored element" description="Rename local variable &apos;sommeColonne&apos;" id="org.eclipse.jdt.ui.rename.local.variable" input="/src&lt;AlgLin{Matrice.java[Matrice~norme_1@sommeColonne!6127!6152!6134!6145!D!0!false" name="sum" references="true" stamp="1710233268925" version="1.0"/>
+</session>

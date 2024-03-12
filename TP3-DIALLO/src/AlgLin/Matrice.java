@@ -221,11 +221,11 @@ public class Matrice {
 	public double norme_1() {
 		double norme = 0.0;
 		for (int j = 0; j < this.nbColonne(); j++) {
-			double sommeColonne = 0.0;
+			double sum = 0.0;
 			for (int i = 0; i < this.nbLigne(); i++) {
-				sommeColonne += Math.abs(this.coefficient[i][j]);
+				sum += Math.abs(this.coefficient[i][j]);
 			}
-			norme = Math.max(norme, sommeColonne);
+			norme = Math.max(norme, sum);
 		}
 		return norme;
 	}
@@ -238,11 +238,11 @@ public class Matrice {
 	public double norme_inf() {
 		double norme = 0.0;
 		for (int i = 0; i < this.nbLigne(); i++) {
-			double sommeLigne = 0.0;
+			double sumL = 0.0;
 			for (int j = 0; j < this.nbColonne(); j++) {
-				sommeLigne += Math.abs(this.coefficient[i][j]);
+				sumL += Math.abs(this.coefficient[i][j]);
 			}
-			norme = Math.max(norme, sommeLigne);
+			norme = Math.max(norme, sumL);
 		}
 		return norme;
 	}

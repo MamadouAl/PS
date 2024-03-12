@@ -93,9 +93,10 @@ public class Thomas extends SysLin {
 
 	public static void main(String[] args) throws IrregularSysLinException {
 		System.out.println("*** Methode de Thomas ***\n");
-		double[][] tableau = { { 4, 5, 0 }, { 6, 7, 3 }, { 0, 1, 2 } };
+		//double[][] tableau = { { 4, 5, 0 }, { 6, 7, 3 }, { 0, 1, 2 } };
+		double[][] tableau = {{0, -1, -1, -1}, {2,2,2,2}, {-1,-1,-1,0}};
 		Mat3Diag mat3DiagA = new Mat3Diag(tableau);
-		Vecteur vect = new Vecteur(new double[] { 1, 2, 3});
+		Vecteur vect = new Vecteur(new double[] { -2, -2,-2,23});
 		
 		Thomas thomas = new Thomas(mat3DiagA, vect);
 		System.out.println("Mat3Diag A : \n" + mat3DiagA);
@@ -104,7 +105,7 @@ public class Thomas extends SysLin {
 		System.out.println(GREEN +"Solution X : " + solutionX+ RESET);
 
 		Vecteur Ax = Mat3Diag.produit(mat3DiagA, solutionX);
-		Vecteur _b = new Vecteur(new double[] { -1, -2, -3});
+		Vecteur _b = new Vecteur(new double[] {+2, +2,+2, -23});
 		System.out.println("\nMatrice produit : Ax : " + Ax);
 		Vecteur Ax_b = Vecteur.addition(Ax, _b);
 
