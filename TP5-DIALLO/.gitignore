@@ -1,1 +1,14 @@
-/target/
+# Ignore IntelliJ IDEA specific files
+.idea/
+*.iml
+
+# Ignore build files
+target/
+build/
+
+# Ignore other files that should not be committed
+*.log
+*.tmp
+*.bak
+*.swp
+*.class

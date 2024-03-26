@@ -12,6 +12,12 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Scanner;
 
 import javax.swing.*;
 
@@ -19,9 +25,12 @@ import org.lucci.up.*;
 import org.lucci.up.data.*;
 import org.lucci.up.data.math.*;
 import org.lucci.up.data.rendering.*;
-import org.lucci.up.data.rendering.figure.ConnectedLineFigureRenderer;
+//import org.lucci.up.data.rendering.figure.ConnectedLineFigureRenderer;
 
+import org.lucci.up.data.rendering.figure.ConnectedLineFigureRenderer;
 import org.lucci.up.data.rendering.point.PointAsDotRenderer;
+import org.lucci.up.system.Space;
+
 public class Spline {
 	// Attributs
 	private double[] abX;
@@ -129,83 +138,110 @@ public class Spline {
 		return y;
 	}
 
-	public void afficheGraphe()  {
-		JFrame frame = new JFrame( "Graphe sur les splines Cubique" );
+
+	private static void afficheGraphe(HashMap<Double, Double> coordonnees, HashMap<Double, Double> calculCord) {
+		JFrame frame = new JFrame("Graphe sur les Spline Cubique");
 		java.awt.Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int side = (int) (screenSize.getHeight() * 0.5);
-		frame.setSize( side, side );
+		frame.setSize(side, side);
 		frame.setLocation((int) (screenSize.getWidth() - side) / 2, (int) (screenSize.getHeight() - side) / 2);
 
 		Container contentPane = frame.getContentPane();
-		contentPane.setLayout( new GridLayout( 1, 1 ) );
-		//affichage des points
-		Figure f1 = new Figure();
-		f1.addPoint( new Point( -1, -1 ) );
-		f1.addPoint( new Point( 1, 0.4 ) );
-		f1.addPoint( new Point( 4, -0.5 ) );
-		DataElementRenderer renderer1 = new PointAsDotRenderer();
-		renderer1.setColor(Color.blue);
-		f1.addRenderer(renderer1);
-
-		//courbe
-		Function function = new Function() {
-			public Point evaluate( double t ) {
-				//return new Point( t * Math.cos( t ), Math.sin( t ) );
-				return new Point( t, evaluateSpline(t) );
-			}
-		};
-
-		function.setDefinitionValues( 0, 20, 0.2 ); //(xn -x0)/100
-
-		Figure f3 = function.createFigure();
-		DataElementRenderer renderer3 = new ConnectedLineFigureRenderer();
-		renderer3.setColor(Color.green);
-		f3.addRenderer(renderer3);
-
-		Figure figureList = new Figure();
-		figureList.addFigure( f1 );
-		//figureList.addFigure( f2 );
-		figureList.addFigure( f3 );
+		contentPane.setLayout(new GridLayout(1, 1));
 
 		SwingPlotter plotter = new SwingPlotter();
-		plotter.getGraphics2DPlotter().setFigure( figureList );
+
+		Figure f1 = new Figure();
+		for (double i : calculCord.keySet()) {
+			f1.addPoint(new Point(i, calculCord.get(i)));
+		}
+		DataElementRenderer renderer1 = new PointAsDotRenderer();
+		renderer1.setColor(Color.red);
+		f1.addRenderer(renderer1);
+
+		Figure f2 = new Figure();
+		for (double i : coordonnees.keySet()) {
+			f2.addPoint(new Point(i, coordonnees.get(i)));
+		}
+		DataElementRenderer renderer2 = new PointAsDotRenderer();
+		renderer2.setColor(Color.blue);
+		f2.addRenderer(renderer2);
+
+		Figure figureList = new Figure();
+		figureList.addFigure(f1);
+		figureList.addFigure(f2);
+
+		plotter.getGraphics2DPlotter().setFigure(figureList);
+		Space space = plotter.getGraphics2DPlotter().getSpace();
+		space.setMode(Space.PHYSICS);
+		space.setBackgroundColor(Color.white);
+		space.setColor(Color.black);
+		space.getLegend().setText("Representation graphique : Splines Cubiques");
+		space.getXDimension().getLegend().setText("abs");
+		space.getYDimension().getLegend().setText("ord");
+
 		contentPane.add(plotter);
-		frame.setVisible( true );
+		frame.setVisible(true);
 	}
 
 
+	public static void main(String[] args) throws DataOutOfRangeException, IrregularSysLinException {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("***** SPLINE CUBIQUE  *******\nSi vous êtes sur IntelliJ, assurez-vous que le terminal soit sur \n" +
+						"le repertoire courant '.../src/main/java/AlgLin'");
+		System.out.print("Saisir le nom du fichier de données(Exemple : fichier.txt) -> ");
+		String filename = sc.nextLine();
+		sc.close();
 
-	public static void main(String[] args) {
-        // Coordonnées des points de support
-        double[] abscisses = {4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18};
-        double[] ordonnees = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47};
+		ArrayList<Double> abs = new ArrayList<>();
+		ArrayList<Double> ord = new ArrayList<>();
 
-        // Création de l'objet Spline
-        Spline spline = new Spline(abscisses, ordonnees);
+		try {
+			Scanner fileScanner = new Scanner(new File(filename));
+			while (fileScanner.hasNextLine()) {
+				String line = fileScanner.nextLine().trim();
+				if (!line.isEmpty()) {
+					if (line.startsWith("#")) {
+						continue;
+					}
+					String[] values = line.split(" ");
+					abs.add(Double.parseDouble(values[0]));
+					ord.add(Double.parseDouble(values[1]));
+				}
+			}
+			fileScanner.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("Le fichier : '" + filename +"' est introuvable.");
+			return;
+		}
+		/*for (int i = 0; i < x.size(); i++) {
+			System.out.println("x = " + x.get(i) + " y = " + y.get(i));
+		} */
+		// Conversion des ArrayList en tableau
+		double[] xArray = Arrays.stream(abs.toArray()).mapToDouble(o -> (double) o).toArray();
+		double[] yArray = Arrays.stream(ord.toArray()).mapToDouble(o -> (double) o).toArray();
 
-        // Calcul de l'intervalle délimitant les abscisses des points de support
-        double minX = abscisses[0];
-        double maxX = abscisses[abscisses.length - 1];
-/*
-        // Évaluation de la fonction d'interpolation par spline cubiques en 100 valeurs réparties régulièrement
-        int nbValeurs = 100;
-        double intervalle = (maxX - minX) / (nbValeurs - 1);
-        double[] valeursInterpolees = new double[nbValeurs];
-        for (int i = 0; i < nbValeurs; i++) {
-            double val = minX + i * intervalle;
-            try {
-                valeursInterpolees[i] = spline.evaluate(val);
-            } catch (DataOutOfRangeException e) {
-                System.out.println(e.getMessage());
-            }
-        }
+		Spline spline = new Spline(xArray, yArray);
+		// Calcul des points de la courbe
+		double min = abs.get(0);
+		double max = abs.get(abs.size() - 1);
+		double interval = (max - min) / 100;
 
-        // Affichage des valeurs interpolées
-        System.out.println("Valeurs interpolées :");
-        for (int i = 0; i < nbValeurs; i++) {
-            System.out.println("Valeur " + (i + 1) + " : " + valeursInterpolees[i]);
-        }*/
-		spline.afficheGraphe();
-    }
+		HashMap<Double, Double> calculCord = new HashMap<>();
+		for (int i = 0; i <= 100; i++) {
+			double xi = min + i * interval;
+			double yi = spline.evaluateSpline(xi); // Calcul de la valeur de la fonction interpolée par spline cubique
+			calculCord.put(xi, yi);
+		}
+
+		HashMap<Double, Double> coordonnees = new HashMap<>();
+		for (int i = 0; i < abs.size(); i++) {
+			coordonnees.put(abs.get(i), ord.get(i));
+		}
+
+		afficheGraphe(coordonnees, calculCord);
+
+	}
+
 
 }
