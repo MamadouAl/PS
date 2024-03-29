@@ -3,9 +3,9 @@ package AlgLin;
 /**
  * Classe qui permet de manipuler les méthodes d'interpolation par spline
  * cubique pour des fonctions réelles d'une variable réelle.
- * 
+ *
  * @author DIALLO Mamadou Aliou
- * 
+ *
  */
 
 import java.awt.Color;
@@ -23,11 +23,7 @@ import javax.swing.*;
 
 import org.lucci.up.*;
 import org.lucci.up.data.*;
-import org.lucci.up.data.math.*;
 import org.lucci.up.data.rendering.*;
-//import org.lucci.up.data.rendering.figure.ConnectedLineFigureRenderer;
-
-import org.lucci.up.data.rendering.figure.ConnectedLineFigureRenderer;
 import org.lucci.up.data.rendering.point.PointAsDotRenderer;
 import org.lucci.up.system.Space;
 
@@ -113,12 +109,10 @@ public class Spline {
 	 * Méthode qui permet d'évaluer la fonction interpolée par spline cubique en un
 	 * point donné.
 	 */
-	public double evaluateSpline(double val) {
+	public double evaluateSpline(double val) throws DataOutOfRangeException {
 		// Vérification si la valeur x est dans l'intervalle des abscisses des points de
-		// support
 		if (val < abX[0] || val > abX[abX.length - 1]) {
-			return 0;
-			//throw new DataOutOfRangeException("La valeur fournie est en dehors de la plage des données d'entrée.");
+			throw new DataOutOfRangeException("La valeur fournie est en dehors de la plage des données d'entrée.");
 		}
 
 		// Recherche de l'intervalle contenant la valeur
@@ -138,7 +132,9 @@ public class Spline {
 		return y;
 	}
 
-
+	/**
+	 * Méthode qui permet d'afficher le graphe de la fonction interpolée par spline en utilisant la librairie UP
+	 */
 	private static void afficheGraphe(HashMap<Double, Double> coordonnees, HashMap<Double, Double> calculCord) {
 		JFrame frame = new JFrame("Graphe sur les Spline Cubique");
 		java.awt.Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -214,14 +210,11 @@ public class Spline {
 			System.out.println("Le fichier : '" + filename +"' est introuvable.");
 			return;
 		}
-		/*for (int i = 0; i < x.size(); i++) {
-			System.out.println("x = " + x.get(i) + " y = " + y.get(i));
-		} */
-		// Conversion des ArrayList en tableau
-		double[] xArray = Arrays.stream(abs.toArray()).mapToDouble(o -> (double) o).toArray();
-		double[] yArray = Arrays.stream(ord.toArray()).mapToDouble(o -> (double) o).toArray();
 
-		Spline spline = new Spline(xArray, yArray);
+		double[] abscisses = Arrays.stream(abs.toArray()).mapToDouble(o -> (double) o).toArray();
+		double[] ordonnees = Arrays.stream(ord.toArray()).mapToDouble(o -> (double) o).toArray();
+
+		Spline spline = new Spline(abscisses, ordonnees);
 		// Calcul des points de la courbe
 		double min = abs.get(0);
 		double max = abs.get(abs.size() - 1);
@@ -238,7 +231,6 @@ public class Spline {
 		for (int i = 0; i < abs.size(); i++) {
 			coordonnees.put(abs.get(i), ord.get(i));
 		}
-
 		afficheGraphe(coordonnees, calculCord);
 
 	}
